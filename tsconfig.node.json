@@ -6,12 +6,13 @@
     "cypress.config.*",
     "nightwatch.conf.*",
     "playwright.config.*",
-    "eslint.config.*"
+    "eslint.config.*",
+    "electron/**/*"
   ],
   "compilerOptions": {
-    "noEmit": true,
+    "noEmit": false,
+    "outDir": "dist_electron",
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
-
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "types": ["node"]
