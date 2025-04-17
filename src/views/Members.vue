@@ -1,20 +1,6 @@
 <template>
-  <div class="p-4">
-    <h1 class="text-xl font-bold mb-4">Members</h1>
-
-    <div class="mb-2 p-2 bg-gray-100 rounded text-sm">
-      <strong>Electron Status:</strong> {{ electronStatus }}
-    </div>
-
-    <div
-      class="mb-4 text-sm p-2 border rounded"
-      :class="{
-        'bg-green-50 border-green-200': !message.includes('Error'),
-        'bg-red-50 border-red-200': message.includes('Error')
-      }"
-    >
-      <strong>Status:</strong> {{ message }}
-    </div>
+  <div class="w-full">
+    <h1 class="text-xl font-bold mb-4">Members <span class="text-sm text-gray-500">({{ members.length }} total)</span></h1>
 
     <div class="flex space-x-2 mb-6">
       <button
@@ -37,27 +23,27 @@
     <div v-if="loading" class="text-center py-4">
       Loading...
     </div>
-
-    <div v-else class="border rounded overflow-hidden">
-      <table class="min-w-full divide-y">
-        <thead class="bg-gray-100">
+    <div v-else class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 w-full">
+      <table class="table w-full">
+        <!-- head -->
+        <thead>
           <tr>
-            <th class="px-4 py-2 text-left">ID</th>
-            <th class="px-4 py-2 text-left">Name</th>
-            <th class="px-4 py-2 text-left">Nickname</th>
-            <th class="px-4 py-2 text-left">Description</th>
-            <th class="px-4 py-2 text-left">Created At</th>
-            <th class="px-4 py-2 text-left">Actions</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Nickname</th>
+            <th>Description</th>
+            <th>Created At</th>
+            <th>Actions</th>
           </tr>
         </thead>
-        <tbody class="divide-y">
-          <tr v-for="member in members" :key="member.id" class="hover:bg-gray-50">
-            <td class="px-4 py-2">{{ member.id }}</td>
-            <td class="px-4 py-2">{{ member.firstName }} {{ member.lastName }}</td>
-            <td class="px-4 py-2">{{ member.nickname || '-' }}</td>
-            <td class="px-4 py-2 max-w-xs truncate">{{ member.description || '-' }}</td>
-            <td class="px-4 py-2">{{ formatDate(member.createdAt) }}</td>
-            <td class="px-4 py-2">
+        <tbody>
+          <tr v-for="member in members" :key="member.id">
+            <th>{{ member.id }}</th>
+            <td>{{ member.firstName }} {{ member.lastName }}</td>
+            <td>{{ member.nickname || '-' }}</td>
+            <td class="max-w-xs truncate">{{ member.description || '-' }}</td>
+            <td>{{ formatDate(member.createdAt) }}</td>
+            <td>
               <button
                 @click="softDeleteMember(member.id)"
                 v-if="!member.deletedAt"
@@ -75,7 +61,7 @@
             </td>
           </tr>
           <tr v-if="members.length === 0">
-            <td colspan="6" class="px-4 py-2 text-center text-gray-500">
+            <td colspan="6" class="text-center text-gray-500 py-4">
               No members found
             </td>
           </tr>

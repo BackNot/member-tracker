@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-import TailwindTest from './components/TailwindTest.vue'
 import Sidebar from './components/Sidebar.vue'
 </script>
 
@@ -34,7 +31,7 @@ import Sidebar from './components/Sidebar.vue'
     <div class="flex flex-1 w-full">
       <Sidebar />
       <main class="flex-1 p-8 bg-neutral-50 w-full">
-        <div class="max-w-5xl">
+        <div class="w-full">
           <router-view></router-view>
         </div>
       </main>
@@ -42,14 +39,6 @@ import Sidebar from './components/Sidebar.vue'
   </div>
 </template>
 
-<style>
-body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  overflow-x: hidden;
-}
-</style>
 
 <style scoped>
 header {
