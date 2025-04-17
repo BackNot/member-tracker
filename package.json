@@ -2,7 +2,8 @@
   "name": "member-tracker",
   "version": "0.0.0",
   "private": true,
-  "main": "electron/main.js",
+  "type": "module",
+  "main": "electron/main.mjs",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
@@ -10,7 +11,7 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
     "electron:dev": "concurrently \"npm run dev\" \"npm run electron:start\"",
-    "electron:start": "wait-on http://localhost:5173 && electron .",
+    "electron:start": "wait-on http://localhost:5173 && electron --experimental-loader=node:module --experimental-modules .",
     "electron:build": "npm run build && electron-builder",
     "postinstall": "electron-rebuild -f -w sqlite3"
   },

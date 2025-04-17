@@ -160,11 +160,6 @@ const systemItems = ref([
     icon: 'pi-cog'
   },
   {
-    name: 'Database Demo',
-    path: '/database-demo',
-    icon: 'pi-database'
-  },
-  {
     name: 'Help',
     path: '/help',
     icon: 'pi-question-circle'

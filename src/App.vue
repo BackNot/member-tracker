@@ -34,7 +34,7 @@ import Sidebar from './components/Sidebar.vue'
     <div class="flex flex-1 w-full">
       <Sidebar />
       <main class="flex-1 p-8 bg-neutral-50 w-full">
-        <div class="max-w-5xl mx-auto">
+        <div class="max-w-5xl">
           <router-view></router-view>
         </div>
       </main>
