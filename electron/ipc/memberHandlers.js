@@ -1,10 +1,14 @@
 // electron/ipc/memberHandlers.js
 import { ipcMain } from 'electron';
 import memberRepo from '../repositories/MemberRepository.js';
+import { IPC_CHANNELS } from './ipcConstant.js';
 
 export function registerMemberHandlers() {
-  ipcMain.handle('member:create', (_e, data) => memberRepo.create(data));
-  ipcMain.handle('member:getAll', async () => {
+  // Create handler
+  ipcMain.handle(IPC_CHANNELS.MEMBER.CREATE, (_e, data) => memberRepo.create(data));
+  
+  // Get all members handler
+  ipcMain.handle(IPC_CHANNELS.MEMBER.GET_ALL, async () => {
     console.log('memberRepo:', memberRepo);
     try {
       if (!memberRepo || typeof memberRepo.findAll !== 'function') {
@@ -15,15 +19,25 @@ export function registerMemberHandlers() {
       console.log('getAll result:', result);
       return result || [];
     } catch (error) {
-      console.error('Error in member:getAll handler:', error);
+      console.error(`Error in ${IPC_CHANNELS.MEMBER.GET_ALL} handler:`, error);
       return [];
     }
   });
-  ipcMain.handle('member:findOne', (_e, options) => memberRepo.findOne(options));
-  ipcMain.handle('member:update', (_e, values, options) => memberRepo.update(values, options));
+  
+  // Get one member handler
+  ipcMain.handle(IPC_CHANNELS.MEMBER.GET_BY_ID, (_e, options) => memberRepo.findOne(options));
+  
+  // Update member handler
+  ipcMain.handle(IPC_CHANNELS.MEMBER.UPDATE, (_e, values, options) => memberRepo.update(values, options));
+  
+  // Hard delete handler (if you still need this alongside soft delete)
   ipcMain.handle('member:delete', (_e, options) => memberRepo.destroy(options));
   
-  // Add softDelete and restore handlers
-  ipcMain.handle('member:softDelete', (_e, id) => memberRepo.softDelete(id));
-  ipcMain.handle('member:restore', (_e, id) => memberRepo.restore(id));
+  // Soft delete handler
+  ipcMain.handle(IPC_CHANNELS.MEMBER.SOFT_DELETE, (_e, id) => memberRepo.softDelete(id));
+  
+  // Restore handler
+  ipcMain.handle(IPC_CHANNELS.MEMBER.RESTORE, (_e, id) => memberRepo.restore(id));
+  
+  console.log('Member IPC handlers registered successfully');
 }
