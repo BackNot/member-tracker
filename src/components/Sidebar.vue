@@ -14,59 +14,12 @@
               :class="{ 'text-slate-800 bg-slate-200 font-medium': isActive(item.path) }"
             >
               <i :class="`pi ${item.icon} text-lg mr-3`"></i>
-              <span class="font-light" :class="{ 'font-medium': isActive(item.path) }">{{ item.name }}</span>
-            </router-link>
-          </li>
-        </ul>
-      </nav>
-      
-      <!-- Management Section -->
-      <div class="px-8 mb-1 mt-3">
-        <h3 class="text-xs uppercase tracking-wide text-slate-500 font-medium">Management</h3>
-      </div>
-      <nav class="px-8 mb-4">
-        <ul class="space-y-1">
-          <li v-for="(item, index) in managementItems" :key="index">
-            <router-link 
-              :to="item.path" 
-              class="flex items-center px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-800 hover:bg-slate-200/50 transition-all duration-200"
-              :class="{ 'text-slate-800 bg-slate-200 font-medium': isActive(item.path) }"
-            >
-              <i :class="`pi ${item.icon} text-lg mr-3`"></i>
-              <span class="font-light" :class="{ 'font-medium': isActive(item.path) }">{{ item.name }}</span>
+              <span class="font-light" :class="{ 'font-medium': isActive(item.path) }">{{ t(item.name) }}</span>
             </router-link>
           </li>
         </ul>
       </nav>
 
-      <!-- Favorites Section with cards -->
-      <div class="px-8 mb-2 mt-3">
-        <h3 class="text-xs uppercase tracking-wide text-slate-500 font-medium">Favorites</h3>
-      </div>
-      <div class="px-8">
-        <div class="bg-slate-100 rounded-lg p-2 mb-2 border border-slate-200">
-          <div class="flex items-center">
-            <span class="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-slate-700">
-              <i class="pi pi-users text-xs"></i>
-            </span>
-            <div class="ml-2">
-              <p class="text-sm text-slate-800 font-medium">New Members</p>
-              <p class="text-xs text-slate-600">12 new this week</p>
-            </div>
-          </div>
-        </div>
-        <div class="bg-slate-100 rounded-lg p-2 mb-3 border border-slate-200">
-          <div class="flex items-center">
-            <span class="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-slate-700">
-              <i class="pi pi-calendar text-xs"></i>
-            </span>
-            <div class="ml-2">
-              <p class="text-sm text-slate-800 font-medium">Events</p>
-              <p class="text-xs text-slate-600">2 upcoming</p>
-            </div>
-          </div>
-        </div>
-      </div>
       
       <!-- Divider -->
       <div class="w-12 h-px bg-slate-200 mx-8 mt-2 mb-4"></div>
@@ -84,7 +37,7 @@
               :class="{ 'text-slate-800 bg-slate-200 font-medium': isActive(item.path) }"
             >
               <i :class="`pi ${item.icon} text-lg mr-3`"></i>
-              <span class="font-light" :class="{ 'font-medium': isActive(item.path) }">{{ item.name }}</span>
+              <span class="font-light" :class="{ 'font-medium': isActive(item.path) }">{{ t(item.name) }}</span>
             </router-link>
           </li>
         </ul>
@@ -114,17 +67,19 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const route = useRoute()
 
 const mainMenuItems = ref([
-  {
-    name: 'Dashboard',
+ {
+    name: 'sidebar.dashboard',
     path: '/',
     icon: 'pi-home'
   },
   {
-    name: 'Members',
+    name: 'sidebar.members',
     path: '/members',
     icon: 'pi-users'
   },
@@ -135,35 +90,12 @@ const mainMenuItems = ref([
   }
 ])
 
-const managementItems = ref([
-  {
-    name: 'Teams',
-    path: '/teams',
-    icon: 'pi-users'
-  },
-  {
-    name: 'Projects',
-    path: '/projects',
-    icon: 'pi-folder'
-  },
-  {
-    name: 'Calendar',
-    path: '/calendar',
-    icon: 'pi-calendar'
-  }
-])
-
 const systemItems = ref([
   {
-    name: 'Settings',
+    name: 'sidebar.settings',
     path: '/settings',
     icon: 'pi-cog'
   },
-  {
-    name: 'Help',
-    path: '/help',
-    icon: 'pi-question-circle'
-  }
 ])
 
 const isActive = (path: string): boolean => {
