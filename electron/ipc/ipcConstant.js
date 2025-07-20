@@ -1,5 +1,6 @@
 export const IPC_CHANNELS = {
     MEMBER: {
+      GET_ALL_ACTIVE: 'member:getAllActive',
       GET_ALL: 'member:getAll',
       GET_BY_ID: 'member:getById',
       CREATE: 'member:create',

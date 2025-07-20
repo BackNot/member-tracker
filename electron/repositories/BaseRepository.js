@@ -76,21 +76,24 @@ class BaseRepository {
    * @param options - Query options
    * @returns [rowsUpdated, updatedRecords]
    */
-  async update(data, options) {
-    try {
-      const [rowsUpdated, updatedRecords] = await this.model.update(data, {
-        ...options,
-        returning: true,
-      });
-      return [
-        rowsUpdated,
-        updatedRecords ? updatedRecords.map(record => record.toJSON()) : []
-      ];
-    } catch (err) {
-      console.error(`Error updating ${this.model.name}:`, err);
-      throw err;
-    }
+async update(data, options) {
+  try {
+    const [rowsUpdated, updatedRecords] = await this.model.update(data, {
+      ...options,
+      returning: true,
+    });
+    
+    return [
+      rowsUpdated,
+      Array.isArray(updatedRecords) 
+        ? updatedRecords.map(record => record.toJSON()) 
+        : []
+    ];
+  } catch (err) {
+    console.error(`Error updating ${this.model.name}:`, err);
+    throw err;
   }
+}
 
   /**
    * Delete records

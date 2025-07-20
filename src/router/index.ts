@@ -28,7 +28,7 @@ const router = createRouter({
     {
       path: ROUTES.MEMBERS.CREATE,
       name: ROUTE_NAMES.MEMBERS.CREATE,
-      component: () => import('../components/CreateMember.vue')
+      component: () => import('../views/CreateMember.vue')
     },
   ]
 })
