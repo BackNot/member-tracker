@@ -8,6 +8,15 @@ export const IPC_CHANNELS = {
       SOFT_DELETE: 'member:softDelete',
       RESTORE: 'member:restore'
     },
+     MEMBERSHIP: {
+      GET_ALL_ACTIVE: 'membership:getAllActive',
+      GET_ALL: 'membership:getAll',
+      GET_BY_ID: 'membership:getById',
+      CREATE: 'membership:create',
+      UPDATE: 'membership:update',
+      SOFT_DELETE: 'membership:softDelete',
+      RESTORE: 'membership:restore'
+    },
     APP: {
       GET_VERSION: 'app:getVersion',
       CHECK_UPDATES: 'app:checkUpdates'

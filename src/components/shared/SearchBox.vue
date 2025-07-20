@@ -6,7 +6,7 @@
         :value="searchTerm"
         @input="$emit('update:searchTerm', $event.target.value)"
         type="text"
-        :placeholder="$t('members.search')"
+        :placeholder="searchPlaceholder"
         class="w-full px-4 py-2 pl-10 border border-gray-300 rounded-md focus:outline-none focus:border-gray-500 transition-colors duration-200"
       />
       <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -24,11 +24,11 @@
     <div class="flex items-center gap-4">   
       <div class="flex space-x-2">
         <router-link
-          :to="ROUTES.MEMBERS.CREATE"
+          :to="createUrl"
           class="px-3 py-1 bg-green-500 text-white rounded disabled:opacity-50 flex items-center cursor-pointer"
         >
           <i class="pi pi-plus mr-1"></i>
-          {{ t('members.add_member') }}
+          {{ createPlaceholder }}
         </router-link>
       </div>
     </div>
@@ -36,12 +36,14 @@
 </template>
 
 <script setup lang="ts">
-import { ROUTES } from '../../router/routerConst'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 defineProps<{
   searchTerm: string;
+  createUrl: string,
+  searchPlaceholder: string,
+  createPlaceholder: string
 }>()
 
 defineEmits<{

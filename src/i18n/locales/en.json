@@ -2,7 +2,8 @@
   "sidebar": {
     "dashboard": "Dashboard",
     "members": "Members",
-    "settings": "Settings"
+    "settings": "Settings",
+    "memberships": "Membership types"
   },
   "members": {
     "members": "Members",
@@ -34,10 +35,37 @@
     "enter_description": "Enter brief description",
     "cancel": "Cancel",
     "create_member": "Create member",
-    "member_create_success": "Member created successfully! Redirecting to members list...",
+    "member_create_success": "Member was created successfully! Redirecting to members list...",
     "member_create_error": "Error when creating member",
     "first_name_required": "First name is required",
     "last_name_required": "Last name is required"
+  },
+  "memberships": {
+    "id": "ID",
+    "name": "Name",
+    "description": "Description",
+    "days": "Days",
+    "actions": "Actions",
+    "delete": "Delete",
+    "memberships": "Memberships",
+    "delete_confirm_button": "Delete",
+    "delete_cancel_button": "Cancel",
+    "back_to_membership_list": "Back to membership list",
+    "new_membership": "New membership type",
+    "add_new_membership": "Add new membership type",
+    "not_found":"No membership types found",
+    "search": "Search membership types...",
+    "add_membership": "Add membership type",
+    "create_membership": "Create membership",
+    "enter_name": "Enter name",
+    "enter_description": "Enter description",
+    "enter_days": "Enter days",
+    "membership_create_success": "Membership was created successfully! Redirecting to membership list...",
+    "membership_create_error": "Error when creating membership",
+    "days_required": "Invalid days",
+    "information": "Membership information",
+    "delete_confirm_text": "Are you sure that you want to delete",
+    "delete_confirm_title": "Confirm action"
   },
   "pagination": {
     "showing": "Showing",

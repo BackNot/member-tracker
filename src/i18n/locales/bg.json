@@ -2,7 +2,8 @@
   "sidebar": {
     "dashboard": "Табло",
     "members": "Членове",
-    "settings": "Настройки"
+    "settings": "Настройки",
+    "memberships": "Типове членства"
   },
    "members": {
     "members": "Членове",
@@ -38,6 +39,33 @@
     "member_create_error": "Грешка при създаване на потребителя",
     "first_name_required": "Името е задължитено",
     "last_name_required": "Фамилия е задължителна"
+  },
+   "memberships": {
+    "id": "ID",
+    "name": "Име",
+    "description": "Описание",
+    "days": "Дни",
+    "actions": "Действия",
+    "delete": "Изтрий",
+    "not_found":"Не са намерени типове членства",
+    "delete_confirm_button": "Изтрий",
+    "delete_cancel_button": "Откажи",
+    "back_to_memberships_list": "Обратно към списъка",
+    "new_membership": "Нов тип членство",
+    "add_new_membership": "Добави нов тип членство",
+    "memberships": "Типове членства",
+    "search": "Търси типове членства...",
+    "add_membership": "Добави тип членство",
+    "create_membership": "Създай тип членство",
+    "enter_name": "Въведи име",
+    "enter_description": "Въведи описание",
+    "enter_days": "Въведи дни",
+    "membership_create_success": "Членството е създадено успешно! Препращане към списъка...",
+    "membership_create_error": "Грешка при създаване на членство",
+    "days_required": "Невалидни дни",
+    "information": "Информация за тип членство",
+    "delete_confirm_text": "Сигурен ли си, че искаш да изтриеш",
+    "delete_confirm_title": "Потвърди действие"
   },
   "pagination": {
     "showing": "Показване",

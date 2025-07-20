@@ -3,6 +3,8 @@ import { app, BrowserWindow } from 'electron';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { registerMemberHandlers } from './ipc/memberHandlers.js';
+import { registerMembershipHandlers } from './ipc/membershipHandlers.js';
+
 import './database.js';
 
 // Get __dirname equivalent in ES modules
@@ -31,7 +33,8 @@ function createWindow() {
 app.whenReady().then(() => {
   createWindow();
   registerMemberHandlers();
-
+  registerMembershipHandlers();
+  
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });

@@ -83,6 +83,11 @@ const mainMenuItems = ref([
     path: '/members',
     icon: 'pi-users'
   },
+   {
+    name: 'sidebar.memberships',
+    path: '/memberships',
+    icon: 'pi-chart-bar'
+  },
   {
     name: 'Statistics',
     path: '/statistics',

@@ -30,6 +30,16 @@ const router = createRouter({
       name: ROUTE_NAMES.MEMBERS.CREATE,
       component: () => import('../views/CreateMember.vue')
     },
+     {
+      path: ROUTES.MEMBERSHIPS.LIST,
+      name: ROUTE_NAMES.MEMBERSHIPS.LIST,
+      component: () => import('../views/Memberships.vue')
+    },
+       {
+      path: ROUTES.MEMBERSHIPS.CREATE,
+      name: ROUTE_NAMES.MEMBERSHIPS.CREATE,
+      component: () => import('../views/CreateMembership.vue')
+    },
   ]
 })
 

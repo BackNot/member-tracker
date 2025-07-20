@@ -4,6 +4,10 @@ export const ROUTES = {
       LIST: '/members',
       CREATE: '/members/create'
     },
+    MEMBERSHIPS: {
+      LIST: '/memberships',
+      CREATE: '/memberships/create'
+    },
     STATISTICS: '/statistics',
     HELP: '/help'
   };
@@ -14,6 +18,10 @@ export const ROUTES = {
     MEMBERS: {
       LIST: 'Members',
       CREATE: 'Create Member'
+    },
+    MEMBERSHIPS: {
+      LIST: '/memberships',
+      CREATE: '/memberships/create'
     },
     STATISTICS: 'Statistics',
     HELP: 'Help'

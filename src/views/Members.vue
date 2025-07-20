@@ -6,6 +6,9 @@
     
     <SearchBox
       v-model:searchTerm="searchTerm"
+      :createUrl="ROUTES.MEMBERS.CREATE"
+      :searchPlaceholder="t('members.search')"
+      :createPlaceholder="t('members.add_member')"
       @update:searchTerm="currentPage = 1"
     />
     
@@ -29,9 +32,10 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
-import SearchBox from '@/components/members/SearchBox.vue';
+import SearchBox from '@/components/shared/SearchBox.vue';
 import MemberTable from '@/components/members/MemberTable.vue';
 import Pagination from '@/components/members/Pagination.vue';
+import { ROUTES } from '@/router/routerConst'
 import { IPC_CHANNELS } from '@electron/ipc/ipcConstant.js';
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
