@@ -60,12 +60,16 @@
     "enter_name": "Enter name",
     "enter_description": "Enter description",
     "enter_days": "Enter days",
-    "membership_create_success": "Membership was created successfully! Redirecting to membership list...",
+    "membership_create_success": "Membership was saved successfully! Redirecting to membership list...",
     "membership_create_error": "Error when creating membership",
     "days_required": "Invalid days",
     "information": "Membership information",
     "delete_confirm_text": "Are you sure that you want to delete",
-    "delete_confirm_title": "Confirm action"
+    "delete_confirm_title": "Confirm action",
+    "edit": "Edit",
+    "edit_membership": "Edit membership",
+    "save_membership": "Save membership",
+    "edit_information": "Edit membership type"
   },
   "pagination": {
     "showing": "Showing",

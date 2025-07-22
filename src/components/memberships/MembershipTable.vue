@@ -21,8 +21,16 @@
           <td>{{ membership.days }} </td>
           <td>
             <button
+              @click="edit(membership)"
+              class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs hover:bg-blue-200 flex items-center inline-block"
+            >
+              <i class="pi pi-pencil mr-1"></i> {{ t("memberships.edit") }}
+            </button>
+
+            <!-- Delete Button -->
+            <button
               @click="confirmDelete(membership)"
-              class="px-2 py-1 bg-red-100 text-red-800 rounded text-xs hover:bg-red-200 flex items-center"
+              class="px-2 py-1 bg-red-100 text-red-800 rounded text-xs hover:bg-red-200 flex items-center inline-block ml-2"
             >
               <i class="pi pi-trash mr-1"></i> {{ t("memberships.delete") }}
             </button>
@@ -52,6 +60,9 @@
 <script setup lang="ts">
 import DeleteModal from '@/components/shared/DeleteModal.vue';
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { ROUTE_NAMES } from '@/router/routerConst';
+const router = useRouter()
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
@@ -76,6 +87,10 @@ const deleteModal = ref<InstanceType<typeof DeleteModal> | null>(null)
 const confirmDelete = (user: Membership) => {
   itemToDelete.value = user
   deleteModal.value?.openModal()
+}
+
+const edit = (user: Membership) => {
+  router.push({ name: ROUTE_NAMES.MEMBERSHIPS.CREATE, params: { id: user.id } })
 }
 
 const deleteDescription = computed(() => {

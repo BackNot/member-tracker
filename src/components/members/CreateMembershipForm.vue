@@ -2,7 +2,7 @@
   <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
     <div class="px-6 py-4 border-b border-gray-200">
       <h2 class="text-lg font-medium text-gray-900">
-            {{ t("memberships.information") }}
+            {{ formData.id ? t("memberships.edit_information") : t("memberships.information") }}
         </h2>
     </div>
     
@@ -102,7 +102,7 @@
         >
           <i class="pi pi-save mr-2"></i>
           <span>
-            {{ t("memberships.create_membership") }}
+            {{ formData.id ? t("memberships.save_membership") : t("memberships.create_membership") }}
           </span>
         </button>
       </div>
@@ -115,6 +115,7 @@ import { ref, reactive, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 import AlertMessage from '@/components/AlertMessage.vue';
+import type { MembershipPayload, Props, MembershipForm, Emits } from '@/types/memberships';
 
 interface FormErrors {
   name: string;
@@ -122,49 +123,21 @@ interface FormErrors {
   days: string;
 }
 
-interface MembershipForm {
-  name: string;
-  description: string;
-  days: number;
-}
-
-interface MembershipPayload {
-  name: string;
-  description: string;
-  days: number;
-}
-
-// Define props
-interface Props {
-  initialData?: Partial<MembershipForm>;
-  loading?: boolean;
-  message?: string;
-  submitButtonText?: string;
-  messageType?: string
-}
-
 const props = withDefaults(defineProps<Props>(), {
   loading: false,
   message: '',
   submitButtonText: 'Create Member',
-  messageType: ''
+  messageType: 'success'
 });
-
-interface Emits {
-  submit: [data: MembershipPayload];
-  cancel: [];
-  'update:message': [message: string];
-}
 
 const emit = defineEmits<Emits>();
 
 const formData = reactive<MembershipForm>({
+  id: null,
   name: '',
   description: '',
   days: 0,
-  ...props.initialData
 });
-
 
 const formErrors = reactive<FormErrors>({
   name: '',
@@ -175,15 +148,15 @@ const formErrors = reactive<FormErrors>({
 // Watch for initial data changes (useful for edit mode)
 watch(() => props.initialData, (newData) => {
   if (newData) {
+    console.log(newData);
     Object.assign(formData, newData);
+        console.log(formData);
   }
 }, { deep: true });
 
-// Validate the form
 const validateForm = (): boolean => {
   let isValid = true;
   
-  // Reset errors
   formErrors.name = '';
   formErrors.days = '';
   

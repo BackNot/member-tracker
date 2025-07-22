@@ -60,12 +60,16 @@
     "enter_name": "Въведи име",
     "enter_description": "Въведи описание",
     "enter_days": "Въведи дни",
-    "membership_create_success": "Членството е създадено успешно! Препращане към списъка...",
+    "membership_create_success": "Членството е запазено успешно! Препращане към списъка...",
     "membership_create_error": "Грешка при създаване на членство",
     "days_required": "Невалидни дни",
     "information": "Информация за тип членство",
     "delete_confirm_text": "Сигурен ли си, че искаш да изтриеш",
-    "delete_confirm_title": "Потвърди действие"
+    "delete_confirm_title": "Потвърди действие",
+    "edit": "Редактирай",
+    "edit_membership": "Редактирай членство",
+    "save_membership": "Запази членство",
+    "edit_information": "Редактирай тип членство"
   },
   "pagination": {
     "showing": "Показване",

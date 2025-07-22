@@ -38,20 +38,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n'
+import type { AlertType } from '@/types/alerts';
+import type { AlertVariant } from '@/types/alerts';
+import type { Props } from '@/types/alerts';
+
 const { t } = useI18n()
-
-// Define types
-type AlertType = 'success' | 'error' | 'warning' | 'info';
-type AlertVariant = 'filled' | 'outlined' | 'border-left';
-
-interface Props {
-  message: string;
-  description?: string;
-  type?: AlertType;
-  variant?: AlertVariant;
-  dismissible?: boolean;
-  customClasses?: string;
-}
 
 const props = withDefaults(defineProps<Props>(), {
   type: 'info',

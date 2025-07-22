@@ -15,7 +15,7 @@
     <div class="flex items-center justify-between mb-6 pb-3 border-b border-gray-200">
       <h1 class="text-2xl font-bold text-gray-900">
         <i class="pi pi-user-plus mr-2 text-blue-600"></i>
-        {{ t("memberships.add_new_membership") }}
+        {{ isEditMode ? t("memberships.edit_information") : t("memberships.add_new_membership") }}
       </h1>
     </div>
 
@@ -23,6 +23,7 @@
       :loading="loading"
       :messageType="messageType"
       :message="message"
+      :initialData="editMembershipData"
       @submit="handleFormSubmit"
       @cancel="handleCancel"
     />
@@ -30,22 +31,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { ROUTES } from '../router/routerConst';
+import type { MembershipForm } from '@/types/memberships';
 import { IPC_CHANNELS } from '../../electron/ipc/ipcConstant.js';
 import Breadcrumbs from '@/components/shared/Breadcrumbs.vue';
 import { useI18n } from 'vue-i18n';
 import CreateMembershipForm from '@/components/members/CreateMembershipForm.vue';
-
-const { t } = useI18n();
-
-// Interface for the payload sent to backend
-interface MembershipPayload {
-  name: string;
-  description: string;
-  days: number;
-}
+import { useRoute } from 'vue-router'
+import type { AlertType } from '@/types/alerts.js';
+import type { MembershipPayload } from '@/types/memberships';
 
 // Interface for any IPC error
 interface IpcError extends Error {
@@ -53,26 +49,43 @@ interface IpcError extends Error {
   errno?: number;
 }
 
-const router = useRouter();
-
-// UI state
-const loading = ref<boolean>(false);
-const message = ref<string>('');
-const messageType = ref<string>('');
-
-const breadcrumbItems = computed(() => [
-  { text: t('memberships.memberships'), to: ROUTES.MEMBERSHIPS.LIST },
-  { text: t('memberships.new_membership') }
-]);
-
 // Define a type for the Electron IPC renderer
 interface IpcRenderer {
   invoke: (channel: string, ...args: any[]) => Promise<any>;
 }
 
+const route = useRoute()
+const { t } = useI18n();
+const router = useRouter();
+
+// UI state
+const loading = ref<boolean>(false);
+const message = ref<string>('');
+const messageType = ref<AlertType>('success');
+const editMembershipData = ref<MembershipForm|null>(null);
+
+const isEditMode = computed(() => {
+  const id = Number(route.params.id);
+  return !isNaN(id) && id > 0;
+});
+
+const breadcrumbItems = computed(() => [
+  { text: t('memberships.memberships'), to: ROUTES.MEMBERSHIPS.LIST },
+  { text: isEditMode.value ? t('memberships.edit_membership')  : t('memberships.new_membership') }
+]);
+
 // Get the ipcRenderer if available
 // @ts-ignore - Electron exposes this property in the preload script
 const ipc: IpcRenderer | undefined = window.electron?.ipcRenderer;
+
+
+onMounted(async () => {
+  if (isEditMode.value) {
+    const id = route.params.id
+    console.log(route.params.id);
+    editMembershipData.value = await ipc?.invoke(IPC_CHANNELS.MEMBERSHIP.GET_BY_ID, id)
+  }
+})
 
 // Handle form submission
 const handleFormSubmit = async (membershipData: MembershipPayload): Promise<void> => {
@@ -80,20 +93,22 @@ const handleFormSubmit = async (membershipData: MembershipPayload): Promise<void
   message.value = '';
   
   try {
-    // Send to Electron backend
-    await ipc?.invoke(IPC_CHANNELS.MEMBERSHIP.CREATE, membershipData);
+    if (isEditMode.value) {
+      await ipc?.invoke(IPC_CHANNELS.MEMBERSHIP.UPDATE, membershipData, {
+        where: { id: route.params.id }
+      });
+    } else {
+      await ipc?.invoke(IPC_CHANNELS.MEMBERSHIP.CREATE, membershipData);
+    }
     
-    // Show success message
     message.value = t("memberships.membership_create_success");
     messageType.value = "success"
 
-    // Redirect after a short delay
     setTimeout(() => {
       router.push(ROUTES.MEMBERSHIPS.LIST);
     }, 1500);
     
   } catch (e: unknown) {
-    // Type guard to handle error properly
     const error = e as IpcError;
     message.value = t("memberships.memberhip_create_error") + " " + error.message;
     messageType.value = "error"
@@ -102,7 +117,6 @@ const handleFormSubmit = async (membershipData: MembershipPayload): Promise<void
   }
 };
 
-// Handle form cancellation
 const handleCancel = (): void => {
   router.push(ROUTES.MEMBERSHIPS.LIST);
 };
