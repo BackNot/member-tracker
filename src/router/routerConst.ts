@@ -2,7 +2,7 @@ export const ROUTES = {
     HOME: '/',
     MEMBERS: {
       LIST: '/members',
-      CREATE: '/members/create'
+      CREATE: '/members/create:id?'
     },
     MEMBERSHIPS: {
       LIST: '/memberships',
@@ -20,8 +20,8 @@ export const ROUTES = {
       CREATE: 'Create Member'
     },
     MEMBERSHIPS: {
-      LIST: '/memberships',
-      CREATE: '/memberships/create:id?'
+      LIST: 'List memberships',
+      CREATE: 'Create membership'
     },
     STATISTICS: 'Statistics',
     HELP: 'Help'

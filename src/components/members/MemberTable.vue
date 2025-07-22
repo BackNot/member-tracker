@@ -21,8 +21,15 @@
           <td>{{ formatDate(member.createdAt) }}</td>
           <td>
             <button
+              @click="edit(member)"
+              class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs hover:bg-blue-200 flex items-center inline-block"
+            >
+              <i class="pi pi-pencil mr-1"></i> {{ t("members.edit") }}
+            </button>
+
+            <button
               @click="confirmDelete(member)"
-              class="px-2 py-1 bg-red-100 text-red-800 rounded text-xs hover:bg-red-200 flex items-center"
+              class="px-2 py-1 bg-red-100 text-red-800 rounded text-xs hover:bg-red-200 flex items-center ml-2 inline-block"
             >
               <i class="pi pi-trash mr-1"></i> {{ t("members.delete") }}
             </button>
@@ -53,6 +60,10 @@
 import DeleteModal from '@/components/shared/DeleteModal.vue';
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
+import { ROUTE_NAMES } from '@/router/routerConst';
+const router = useRouter()
+
 const { t } = useI18n()
 
 interface Member {
@@ -95,6 +106,10 @@ const handleDeleteConfirmed = () => {
     emit("deleteMember", itemToDelete.value.id);
     itemToDelete.value = null;
   }
+}
+
+const edit = (user: Member) => {
+  router.push({ name: ROUTE_NAMES.MEMBERS.CREATE, params: { id: user.id } })
 }
 
 const formatDate = (dateString: string) => {

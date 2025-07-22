@@ -128,59 +128,33 @@
 <script setup lang="ts">
 import { ref, reactive, computed, watch } from 'vue';
 import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
 import AlertMessage from '@/components/AlertMessage.vue';
+import type { MemberForm, MemberPayload, Props, Emits } from '@/types/members';
 
-// Define interfaces
-interface MemberForm {
-  firstName: string;
-  lastName: string;
-  nickname: string;
-  description: string;
-}
+const { t } = useI18n()
 
 interface FormErrors {
   firstName: string;
   lastName: string;
 }
 
-interface MemberPayload {
-  firstName: string;
-  lastName: string;
-  nickname?: string;
-  description?: string;
-}
-
-// Define props
-interface Props {
-  initialData?: Partial<MemberForm>;
-  loading?: boolean;
-  message?: string;
-  submitButtonText?: string;
-  messageType?: string
-}
-
 const props = withDefaults(defineProps<Props>(), {
   loading: false,
   message: '',
   submitButtonText: 'Create Member',
-  messageType: ''
+  messageType: 'success'
 });
 
-interface Emits {
-  submit: [data: MemberPayload];
-  cancel: [];
-  'update:message': [message: string];
-}
+
 
 const emit = defineEmits<Emits>();
 
 const formData = reactive<MemberForm>({
+  id: null,
   firstName: '',
   lastName: '',
   nickname: '',
   description: '',
-  ...props.initialData
 });
 
 
@@ -189,18 +163,15 @@ const formErrors = reactive<FormErrors>({
   lastName: ''
 });
 
-// Watch for initial data changes (useful for edit mode)
 watch(() => props.initialData, (newData) => {
   if (newData) {
     Object.assign(formData, newData);
   }
 }, { deep: true });
 
-// Validate the form
 const validateForm = (): boolean => {
   let isValid = true;
   
-  // Reset errors
   formErrors.firstName = '';
   formErrors.lastName = '';
   

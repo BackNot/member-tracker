@@ -145,12 +145,9 @@ const formErrors = reactive<FormErrors>({
   days: ''
 });
 
-// Watch for initial data changes (useful for edit mode)
 watch(() => props.initialData, (newData) => {
   if (newData) {
-    console.log(newData);
     Object.assign(formData, newData);
-        console.log(formData);
   }
 }, { deep: true });
 

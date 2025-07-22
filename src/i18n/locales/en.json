@@ -34,11 +34,14 @@
     "enter_nickname": "Enter nickname",
     "enter_description": "Enter brief description",
     "cancel": "Cancel",
-    "create_member": "Create member",
-    "member_create_success": "Member was created successfully! Redirecting to members list...",
+    "create_member": "Save member",
+    "member_create_success": "Member was saved successfully! Redirecting to members list...",
     "member_create_error": "Error when creating member",
     "first_name_required": "First name is required",
-    "last_name_required": "Last name is required"
+    "last_name_required": "Last name is required",
+    "edit_old_member": "Edit member",
+    "edit_member": "Edit member",
+    "edit": "Edit"
   },
   "memberships": {
     "id": "ID",

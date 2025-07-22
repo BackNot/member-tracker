@@ -34,11 +34,14 @@
     "enter_nickname": "Въведи прякор",
     "enter_description": "Въведи кратко описание",
     "cancel": "Откажи",
-    "create_member": "Създай потребител",
-    "member_create_success": "Потребителя е създаден успешно! Препращане към списъка...",
+    "create_member": "Запази потребител",
+    "member_create_success": "Потребителя е запазен успешно! Препращане към списъка...",
     "member_create_error": "Грешка при създаване на потребителя",
     "first_name_required": "Името е задължитено",
-    "last_name_required": "Фамилия е задължителна"
+    "last_name_required": "Фамилия е задължителна",
+    "edit_old_member": "Редактирай член",
+    "edit_member": "Редактирай член",
+    "edit": "Редактирай"
   },
    "memberships": {
     "id": "ID",

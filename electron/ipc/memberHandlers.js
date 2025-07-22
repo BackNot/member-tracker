@@ -27,7 +27,7 @@ export function registerMemberHandlers() {
   ipcMain.handle(IPC_CHANNELS.MEMBER.GET_ALL_ACTIVE, (_e, options) => memberRepo.findActive());
   
   // Get one member handler
-  ipcMain.handle(IPC_CHANNELS.MEMBER.GET_BY_ID, (_e, options) => memberRepo.findOne(options));
+  ipcMain.handle(IPC_CHANNELS.MEMBER.GET_BY_ID, (_e, id) => memberRepo.findById(id));
   
   // Update member handler
   ipcMain.handle(IPC_CHANNELS.MEMBER.UPDATE, (_e, values, options) => memberRepo.update(values, options));
