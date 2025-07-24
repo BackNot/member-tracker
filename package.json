@@ -17,6 +17,10 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.4",
+    "dotenv": "^17.2.0",
+    "electron-oauth2": "^3.0.0",
+    "electron-store": "^10.1.0",
+    "googleapis": "^154.0.0",
     "primeicons": "^7.0.0",
     "reflect-metadata": "^0.2.2",
     "sequelize": "^6.37.7",

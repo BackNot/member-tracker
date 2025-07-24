@@ -4,8 +4,11 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { registerMemberHandlers } from './ipc/memberHandlers.js';
 import { registerMembershipHandlers } from './ipc/membershipHandlers.js';
+import { registerBackupHandlers } from './ipc/backupHandlers.js';
 
 import './database.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 // Get __dirname equivalent in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -30,10 +33,12 @@ function createWindow() {
   }
 }
 
+
 app.whenReady().then(() => {
   createWindow();
   registerMemberHandlers();
   registerMembershipHandlers();
+  registerBackupHandlers();
   
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -42,4 +47,5 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();
-}); 
+});
+

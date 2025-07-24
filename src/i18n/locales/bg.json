@@ -1,4 +1,36 @@
 {
+  "dashboard": {
+    "dont_forget": "Не забравяй да правиш копия на базата",
+    "hello": "Здравей! Днес е",
+    "cloud_backups": "Копия в облака",
+    "connect_drive": "Свържи се с Google Drive за безплатни копия",
+    "connecting": "Свързване...",
+    "connect_google_drive": "Свържи Google Drive",
+    "wait_browser": "Чакам потвърждение от браузъра...",
+    "go_into_account": "Влез в Google акаунта си в браузъра и разреши достъпа.",
+    "creating": "Създаване...",
+    "create_backup": "Създай копие",
+    "loading": "Зареждане...",
+    "show_backup": "Покажи копия",
+    "terminate_connection": "Прекъсни връзката",
+    "available_backups": "Налични копия",
+    "connect_success": "Успешно свързване с Google Drive!",
+    "connect_error": "Грешка при свързване",
+    "backup_success": "Копието е създадено успешно",
+    "backup_error": "Грешка при създаване на копие",
+    "no_backup": "Няма налични копия",
+    "backup_load_error": "Грешка при зареждане на копия",
+    "stop_confirm": "Сигурни ли сте, че искате да прекъснете връзката с Google Drive?",
+    "connection_stopped": "Връзката с Google Drive е прекъсната",
+    "connection_error_stopped": "Грешка при прекъсване"
+  },
+  "drive": {
+    "auth_fail": "Неуспешна връзка",
+    "error": "Грешка",
+    "close_window": "Върнете се към приложението",
+    "auth_success": "Успешна връзка",
+    "page_not_found": "Страницата не е намерена"
+  },
   "sidebar": {
     "dashboard": "Табло",
     "members": "Членове",

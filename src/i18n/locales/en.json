@@ -1,4 +1,11 @@
 {
+  "drive": {
+    "auth_fail": "Authentication failed",
+    "error": "Error",
+    "close_window": "You can go back to the application",
+    "auth_success": "Authenitcation succeed",
+    "page_not_found": "Page not found"
+  },
   "sidebar": {
     "dashboard": "Dashboard",
     "members": "Members",
