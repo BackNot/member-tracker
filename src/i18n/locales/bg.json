@@ -24,6 +24,13 @@
     "connection_stopped": "Връзката с Google Drive е прекъсната",
     "connection_error_stopped": "Грешка при прекъсване"
   },
+  "membermemberships": {
+    "id": "ID",
+    "name": "Име",
+    "start_date": "Начална дата",
+    "end_date": "Крайна дата",
+    "actions": "Действия"
+  },
   "drive": {
     "auth_fail": "Неуспешна връзка",
     "error": "Грешка",

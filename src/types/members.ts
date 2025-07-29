@@ -23,6 +23,16 @@ export interface Props {
   messageType?: AlertType
 }
 
+export interface Member {
+  id: number;
+  firstName: string;
+  lastName: string;
+  nickname?: string;
+  description?: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
+}
 
 export interface Emits {
   submit: [data: MemberPayload];

@@ -4,11 +4,12 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { registerMemberHandlers } from './ipc/memberHandlers.js';
 import { registerMembershipHandlers } from './ipc/membershipHandlers.js';
+import { registerMemberMembershipHandlers } from './ipc/memberMembershipHandlers.js';
 import { registerBackupHandlers } from './ipc/backupHandlers.js';
 
 import './database.js';
 import dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ path: '.env.local' });
 
 // Get __dirname equivalent in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -38,6 +39,8 @@ app.whenReady().then(() => {
   createWindow();
   registerMemberHandlers();
   registerMembershipHandlers();
+  registerMemberMembershipHandlers();
+
   registerBackupHandlers();
   
   app.on('activate', () => {

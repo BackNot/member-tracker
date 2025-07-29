@@ -62,20 +62,12 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { ROUTE_NAMES } from '@/router/routerConst';
+import type { Member } from '@/types/members'
+import { formatDate } from '@/utils/date';
+
 const router = useRouter()
 
 const { t } = useI18n()
-
-interface Member {
-  id: number;
-  firstName: string;
-  lastName: string;
-  nickname?: string;
-  description?: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-}
 
 const props = defineProps<{
   members: Member[];
@@ -111,9 +103,4 @@ const handleDeleteConfirmed = () => {
 const edit = (user: Member) => {
   router.push({ name: ROUTE_NAMES.MEMBERS.CREATE, params: { id: user.id } })
 }
-
-const formatDate = (dateString: string) => {
-  if (!dateString) return '-';
-  return new Date(dateString).toLocaleDateString();
-};
 </script>

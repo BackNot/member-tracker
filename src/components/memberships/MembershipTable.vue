@@ -62,6 +62,7 @@ import DeleteModal from '@/components/shared/DeleteModal.vue';
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { ROUTE_NAMES } from '@/router/routerConst';
+import { formatDate } from '@/utils/date';
 const router = useRouter()
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
@@ -107,9 +108,4 @@ const handleDeleteConfirmed = () => {
     itemToDelete.value = null;
   }
 }
-
-const formatDate = (dateString: string) => {
-  if (!dateString) return '-';
-  return new Date(dateString).toLocaleDateString();
-};
 </script>

@@ -29,6 +29,13 @@
       @cancel="handleCancel"
     />
   </div>
+    
+  
+<MemberMembershipTable 
+  :memberId="editMemberData?.id" 
+  v-if="isEditMode && editMemberData?.id" 
+/>
+
 </template>
 
 <script setup lang="ts">
@@ -37,20 +44,15 @@ import { useRouter } from 'vue-router';
 import { ROUTES } from '../router/routerConst';
 import { IPC_CHANNELS } from '../../electron/ipc/ipcConstant.js';
 import Breadcrumbs from '@/components/shared/Breadcrumbs.vue';
+import MemberMembershipTable from '@/components/members/MemberMembershipTable.vue';
 import CreateMemberForm from '@/components/members/CreateMemberForm.vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router'
 import type { MemberPayload, MemberForm } from '@/types/members';
 import type { AlertType } from '@/types/alerts.js';
+import type { IpcRenderer, IpcError } from '@/types/ipc.js';
 
 const { t } = useI18n();
-
-
-// Interface for any IPC error
-interface IpcError extends Error {
-  code?: string;
-  errno?: number;
-}
 
 const router = useRouter();
 const route = useRoute()
@@ -70,10 +72,6 @@ const breadcrumbItems = computed(() => [
   { text: t('members.members'), to: ROUTES.MEMBERS.LIST },
   { text: isEditMode.value ? t('members.edit_member') : t('members.new_member') }
 ]);
-
-interface IpcRenderer {
-  invoke: (channel: string, ...args: any[]) => Promise<any>;
-}
 
 // Get the ipcRenderer if available
 // @ts-ignore - Electron exposes this property in the preload script

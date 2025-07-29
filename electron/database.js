@@ -5,6 +5,8 @@ import Member from './models/Member.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import Membership from './models/Membership.js';
+import MemberMembership from './models/MemberMembership.js';
+import { setupAssociations } from './associations.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,18 +21,23 @@ const sequelize = new Sequelize({
 const initializeDatabase = async () => {
   try {
     await sequelize.authenticate();
-    
-    Member.init(sequelize); 
-    Membership.init(sequelize); 
 
-    await sequelize.sync({ alter: true });
+    const models = {
+      Member: Member.init(sequelize),
+      Membership: Membership.init(sequelize),
+      MemberMembership: MemberMembership.init(sequelize)
+    };
+
+    setupAssociations();
+
+    await sequelize.sync();   
+
     console.log('Database connected and models synced');
   } catch (err) {
     console.error('Database init error:', err);
     throw err;
   }
 };
-
 // Automatically initialize on import
 initializeDatabase().catch(console.error);
 
