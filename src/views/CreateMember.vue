@@ -32,8 +32,9 @@
     
   
 <MemberMembershipTable 
-  :memberId="editMemberData?.id" 
+  :memberMemberships="memberMemberships" 
   v-if="isEditMode && editMemberData?.id" 
+  @deleteMemberMembership="softDeleteMemberMembership"
 />
 
 </template>
@@ -51,6 +52,7 @@ import { useRoute } from 'vue-router'
 import type { MemberPayload, MemberForm } from '@/types/members';
 import type { AlertType } from '@/types/alerts.js';
 import type { IpcRenderer, IpcError } from '@/types/ipc.js';
+import type { MemberMembership } from '@/types/memberships';
 
 const { t } = useI18n();
 
@@ -61,6 +63,7 @@ const loading = ref<boolean>(false);
 const message = ref<string>('');
 const messageType = ref<AlertType>('success');
 const editMemberData = ref<MemberForm|null>(null);
+const memberMemberships = ref<MemberMembership[]>([]);
 
 
 const isEditMode = computed(() => {
@@ -109,10 +112,31 @@ onMounted(async () => {
   if (isEditMode.value) {
     const id = route.params.id
     editMemberData.value = await ipc?.invoke(IPC_CHANNELS.MEMBER.GET_BY_ID, id)
+    await reloadMemberMemberhips(id);
   }
 })
 
 const handleCancel = (): void => {
   router.push(ROUTES.MEMBERS.LIST);
 };
+
+const reloadMemberMemberhips = async (id: string|string[]) => {
+  memberMemberships.value = await ipc?.invoke(IPC_CHANNELS.MEMBER_MEMBERSHIP.FIND_ALL, {
+    where: {
+      memberId: id
+    }
+  });
+};
+
+const softDeleteMemberMembership = async (id: number) => {  
+  try {
+    await ipc.invoke(IPC_CHANNELS.MEMBER_MEMBERSHIP.SOFT_DELETE, id);
+    await reloadMemberMemberhips(route.params.id);
+  } catch (e: any) {
+    console.error('Error deleting member:', e);
+  } finally {
+    loading.value = false;
+  }
+};
+
 </script>

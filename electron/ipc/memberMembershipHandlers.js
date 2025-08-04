@@ -31,7 +31,7 @@ export function registerMemberMembershipHandlers() {
   ipcMain.handle(IPC_CHANNELS.MEMBER_MEMBERSHIP.FIND_ONE, (_e, options) => memberMembershipRepo.findOne(options));
   
   ipcMain.handle(IPC_CHANNELS.MEMBER_MEMBERSHIP.FIND_ALL, async (_e, options = {}) => {
-    const withMembership = await memberMembershipRepo.findAll({
+    const withMembership = await memberMembershipRepo.findActive({
       ...options,
       include: [
         { model: Member, as: 'member' },

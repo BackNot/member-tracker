@@ -104,6 +104,6 @@ const systemItems = ref([
 ])
 
 const isActive = (path: string): boolean => {
-  return route.path === path
+  return route.path === path || route.path.startsWith(path + "/");
 }
 </script> 
