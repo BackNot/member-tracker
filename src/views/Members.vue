@@ -103,7 +103,9 @@ const totalPages = computed(() => {
 // Refresh members
 const refreshMembers = async () => {  
   try {
-    const data = await ipc.invoke(IPC_CHANNELS.MEMBER.GET_ALL_ACTIVE);
+    const data = await ipc.invoke(IPC_CHANNELS.MEMBER.GET_ALL_ACTIVE, {
+        order: [['createdAt', 'DESC']]
+    });
     members.value = data;
     
     // Reset to first page after refresh

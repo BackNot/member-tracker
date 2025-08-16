@@ -4,6 +4,15 @@
         <i class="pi pi-user-plus mr-2 text-blue-600"></i>
         {{  t("membermemberships.info") }}
       </h1>
+
+       <div class="flex items-center gap-4">   
+          <div class="flex space-x-2">
+            <button class="px-3 py-1 bg-green-500 text-white rounded disabled:opacity-50 flex items-center cursor-pointer" @click="addMembership()">
+              <i class="pi pi-plus mr-1"></i>
+                {{ t("membermemberships.add") }}
+            </button>
+          </div>
+      </div>
     </div>
 
     <div class="bg-white rounded-lg border border-gray-200 shadow-sm">
@@ -34,13 +43,6 @@
             {{ formatDate(memberMembership.endDate) }}
           </td>
           <td>
-            <!-- <button
-              @click="edit(member)"
-              class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs hover:bg-blue-200 flex items-center inline-block"
-            >
-              <i class="pi pi-pencil mr-1"></i> {{ t("members.edit") }}
-            </button> -->
-
             <button
               @click="confirmDelete(memberMembership)"
               class="px-2 py-1 bg-red-100 text-red-800 rounded text-xs hover:bg-red-200 flex items-center ml-2 inline-block"
@@ -67,6 +69,15 @@
       :title="t('members.delete_confirm_title')" 
       @confirmed="handleDeleteConfirmed"
     />
+
+     <CreateMemberMembershipModal 
+      ref="createMemberMembershipModal" 
+      :options="options"
+      :memberId="memberId"
+      @confirmed="handleFormSubmission"
+    />
+
+
 </template>
 
 <script setup lang="ts">
@@ -77,9 +88,13 @@ import { formatDate } from '@/utils/date';
 import type { MemberMembership } from '@/types/memberships';
 import type { IpcRenderer } from '@/types/ipc.js';
 import DeleteModal from '@/components/shared/DeleteModal.vue';
+import CreateMemberMembershipModal from '@/components/members/CreateMemberMembershipModal.vue';
+import type { MemberMembershipFormData, SelectOption } from '@/types/membermemberships';
+import type { MembershipForm } from '@/types/memberships';
 
 defineProps<{
   memberMemberships: MemberMembership[];
+  memberId: number|null;
 }>()
 
 // @ts-ignore - Electron exposes this property in the preload script
@@ -89,10 +104,15 @@ const { t } = useI18n()
 
 const itemToDelete = ref<MemberMembership|null>(null)
 const deleteModal = ref<InstanceType<typeof DeleteModal> | null>(null)
+const createMemberMembershipModal = ref<InstanceType<typeof CreateMemberMembershipModal> | null>(null)
 
 const confirmDelete = (membership: MemberMembership) => {
   itemToDelete.value = membership
   deleteModal.value?.openModal()
+}
+
+const addMembership = () => {
+  createMemberMembershipModal.value?.openModal()
 }
 
 const deleteDescription = computed(() => {
@@ -102,6 +122,7 @@ const deleteDescription = computed(() => {
 
 const emit = defineEmits<{
   deleteMemberMembership: [id: number];
+  createMemberMembership: [id: MemberMembershipFormData];
 }>();
 
 
@@ -112,4 +133,49 @@ const handleDeleteConfirmed = () => {
   }
 }
 
+const options = ref<SelectOption[]>([])
+
+onMounted(async () => {
+  try {
+    const rawOptions: MembershipForm[] = await ipc?.invoke(IPC_CHANNELS.MEMBERSHIP.GET_ALL_ACTIVE) || [];
+
+    // Extract only id and name
+    const mappedOptions: SelectOption[] = rawOptions.map(item => ({
+      value: item.id,
+      label: item.name
+    }));
+
+    // Update the ref
+    options.value = mappedOptions;
+    
+    console.log('Loaded membership options:', mappedOptions.length);
+  } catch (error) {
+    console.error('Error loading membership options:', error);
+  }
+});
+
+const handleFormSubmission = async (formData: MemberMembershipFormData) => {
+  console.log('Original form data:', formData);
+
+  try {
+    // Transform form data to match MemberMembership model structure
+    const membershipData = {
+      memberId: typeof formData.member === 'object' ? formData.member : formData.member,
+      membershipId: typeof formData.selectedOption === 'object' ? formData.selectedOption : formData.selectedOption,
+      startDate: formData.startDate,
+      endDate: formData.endDate
+    };
+
+    console.log('Transformed data for creation:', membershipData);
+
+    // Validate required fields
+    if (!membershipData.memberId || !membershipData.membershipId || !membershipData.startDate) {
+      throw new Error('Missing required fields: memberId, membershipId, and startDate are required');
+    }
+    emit("createMemberMembership", membershipData);
+
+  } catch (error) {
+    console.error('Error creating member membership:', error);
+  }
+};
 </script>

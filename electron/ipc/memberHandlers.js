@@ -24,7 +24,7 @@ export function registerMemberHandlers() {
     }
   });
   
-  ipcMain.handle(IPC_CHANNELS.MEMBER.GET_ALL_ACTIVE, (_e, options) => memberRepo.findActive());
+  ipcMain.handle(IPC_CHANNELS.MEMBER.GET_ALL_ACTIVE, (_e, options) => memberRepo.findActive(options));
   
   // Get one member handler
   ipcMain.handle(IPC_CHANNELS.MEMBER.GET_BY_ID, (_e, id) => memberRepo.findById(id));

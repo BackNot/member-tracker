@@ -8,6 +8,7 @@ export const ROUTES = {
       LIST: '/memberships',
       CREATE: '/memberships/create:id?'
     },
+   
     STATISTICS: '/statistics',
     HELP: '/help'
   };

@@ -26,7 +26,7 @@ export function registerMemberMembershipHandlers() {
     }
   });
   
-  ipcMain.handle(IPC_CHANNELS.MEMBER_MEMBERSHIP.GET_ALL_ACTIVE, (_e, options) => memberMembershipRepo.findActive());
+  ipcMain.handle(IPC_CHANNELS.MEMBER_MEMBERSHIP.GET_ALL_ACTIVE, (_e, options) => memberMembershipRepo.findActive(options));
 
   ipcMain.handle(IPC_CHANNELS.MEMBER_MEMBERSHIP.FIND_ONE, (_e, options) => memberMembershipRepo.findOne(options));
   

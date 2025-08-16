@@ -25,7 +25,7 @@
       <div class="w-12 h-px bg-slate-200 mx-8 mt-2 mb-4"></div>
       
       <!-- System Section -->
-      <div class="px-8 mb-1">
+      <!-- <div class="px-8 mb-1">
         <h3 class="text-xs uppercase tracking-wide text-slate-500 font-medium">System</h3>
       </div>
       <nav class="px-8 mb-4">
@@ -41,11 +41,11 @@
             </router-link>
           </li>
         </ul>
-      </nav>
+      </nav> -->
       
       <!-- Bottom section -->
-      <div class="mt-auto px-8 pt-4 border-t border-slate-200 bg-slate-100/70">
-        <div class="flex items-center mb-3">
+      <!-- <div class="mt-auto px-8 pt-4 border-t border-slate-200 bg-slate-100/70"> -->
+        <!-- <div class="flex items-center mb-3">
           <span class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-700">
             <span class="text-sm font-medium">A</span>
           </span>
@@ -59,7 +59,7 @@
           <i class="pi pi-sign-out text-sm mr-3"></i>
           <span class="text-sm font-light">Sign out</span>
         </a>
-      </div>
+      </div> -->
     </div>
   </aside>
 </template>
@@ -88,11 +88,6 @@ const mainMenuItems = ref([
     path: '/memberships',
     icon: 'pi-chart-bar'
   },
-  {
-    name: 'Statistics',
-    path: '/statistics',
-    icon: 'pi-chart-bar'
-  }
 ])
 
 const systemItems = ref([

@@ -33,8 +33,10 @@
   
 <MemberMembershipTable 
   :memberMemberships="memberMemberships" 
+  :memberId="editMemberData?.id"
   v-if="isEditMode && editMemberData?.id" 
   @deleteMemberMembership="softDeleteMemberMembership"
+  @createMemberMembership="createMemberMembership"
 />
 
 </template>
@@ -53,6 +55,7 @@ import type { MemberPayload, MemberForm } from '@/types/members';
 import type { AlertType } from '@/types/alerts.js';
 import type { IpcRenderer, IpcError } from '@/types/ipc.js';
 import type { MemberMembership } from '@/types/memberships';
+import type { MemberMembershipFormData } from '@/types/membermemberships';
 
 const { t } = useI18n();
 
@@ -124,7 +127,8 @@ const reloadMemberMemberhips = async (id: string|string[]) => {
   memberMemberships.value = await ipc?.invoke(IPC_CHANNELS.MEMBER_MEMBERSHIP.FIND_ALL, {
     where: {
       memberId: id
-    }
+    },
+    order: [['createdAt', 'DESC']]
   });
 };
 
@@ -137,6 +141,11 @@ const softDeleteMemberMembership = async (id: number) => {
   } finally {
     loading.value = false;
   }
+};
+
+const createMemberMembership = async (membershipData: MemberMembershipFormData) => {  
+  const result = await ipc?.invoke(IPC_CHANNELS.MEMBER_MEMBERSHIP.CREATE, membershipData);
+  await reloadMemberMemberhips(route.params.id);
 };
 
 </script>

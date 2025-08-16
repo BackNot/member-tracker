@@ -49,18 +49,19 @@ class MemberMembership extends Model {
         tableName: 'member_memberships',
         timestamps: true,
         indexes: [
+          // REMOVED: The unique constraint index
+          // {
+          //   unique: true,
+          //   fields: ['member_id', 'membership_id'],
+          //   where: {
+          //     deletedAt: null
+          //   }
+          // },
           {
-            unique: true,
-            fields: ['member_id', 'membership_id'],
-            where: {
-              deletedAt: null
-            }
+            fields: ['member_id']  // Keep this for performance
           },
           {
-            fields: ['member_id']
-          },
-          {
-            fields: ['membership_id']
+            fields: ['membership_id']  // Keep this for performance
           }
         ]
       }
