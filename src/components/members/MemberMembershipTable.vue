@@ -140,8 +140,10 @@ onMounted(async () => {
     const rawOptions: MembershipForm[] = await ipc?.invoke(IPC_CHANNELS.MEMBERSHIP.GET_ALL_ACTIVE) || [];
 
     // Extract only id and name
-    const mappedOptions: SelectOption[] = rawOptions.map(item => ({
-      value: item.id,
+    const mappedOptions: SelectOption[] = rawOptions
+    .filter(item => item.id !== null)       // keep only items with non-null id
+    .map(item => ({
+      value: item.id as number,             // now safe to cast as number
       label: item.name
     }));
 
@@ -154,25 +156,28 @@ onMounted(async () => {
   }
 });
 
+
 const handleFormSubmission = async (formData: MemberMembershipFormData) => {
   console.log('Original form data:', formData);
 
   try {
-    // Transform form data to match MemberMembership model structure
-    const membershipData = {
-      memberId: typeof formData.member === 'object' ? formData.member : formData.member,
-      membershipId: typeof formData.selectedOption === 'object' ? formData.selectedOption : formData.selectedOption,
+    // Transform form data to match the model structure (for backend/API)
+    const membershipDataForAPI = {
+      memberId: formData.memberId,           // number | null
+      membershipId: formData.membershipId, 
       startDate: formData.startDate,
       endDate: formData.endDate
     };
 
-    console.log('Transformed data for creation:', membershipData);
+    console.log('Transformed data for creation:', membershipDataForAPI);
 
     // Validate required fields
-    if (!membershipData.memberId || !membershipData.membershipId || !membershipData.startDate) {
+    if (!membershipDataForAPI.memberId || !membershipDataForAPI.membershipId || !membershipDataForAPI.startDate) {
       throw new Error('Missing required fields: memberId, membershipId, and startDate are required');
     }
-    emit("createMemberMembership", membershipData);
+
+    // Emit the original formData (matches the interface)
+    emit("createMemberMembership", membershipDataForAPI);
 
   } catch (error) {
     console.error('Error creating member membership:', error);

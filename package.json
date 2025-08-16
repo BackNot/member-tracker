@@ -1,14 +1,14 @@
 {
   "name": "member-tracker",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "main": "electron/main.mjs",
   "scripts": {
     "dev": "vite",
-    "build": "run-p type-check \"build-only {@}\" --",
-    "preview": "vite preview",
+    "build": "npm run type-check && npm run build-only",
     "build-only": "vite build",
+    "preview": "vite preview",
     "type-check": "vue-tsc --build",
     "electron:dev": "concurrently \"npm run dev\" \"npm run electron:start\"",
     "electron:start": "wait-on http://localhost:5173 && electron --experimental-loader=node:module --experimental-modules .",
@@ -60,7 +60,12 @@
     },
     "files": [
       "dist/**/*",
-      "electron/**/*"
-    ]
+      "electron/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "target": ["dmg"],
+      "category": "public.app-category.productivity"
+    }
   }
 }

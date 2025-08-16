@@ -33,7 +33,7 @@
                     <div class="relative">
                         <select 
                             id="selectField"
-                            v-model="formData.selectedOption" 
+                            v-model="formData.membershipId" 
                             :disabled="optionsLoading"
                             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                             required
@@ -138,8 +138,8 @@ const emit = defineEmits<{
 const modal = ref<HTMLDialogElement | null>(null)
 
 const formData = ref<MemberMembershipFormData>({
-  member: props.memberId,
-  selectedOption: '',
+  memberId: props.memberId,
+  membershipId: 0,
   startDate: '',
   endDate: ''
 })
@@ -153,7 +153,7 @@ watch(() => formData.value.startDate, (newStartDate) => {
 // Form validation
 const isFormValid = computed(() => {
   return !props.optionsLoading &&
-         formData.value.selectedOption !== '' &&
+         formData.value.membershipId !== 0 &&
          formData.value.startDate !== '' &&
          formData.value.endDate !== ''
 })
@@ -178,8 +178,8 @@ const handleConfirm = (): void => {
 
 const resetForm = (): void => {
   formData.value = {
-    member: null,
-    selectedOption: '',
+    memberId: null,
+    membershipId: 0,
     startDate: '',
     endDate: ''
   }

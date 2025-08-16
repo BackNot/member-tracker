@@ -34,7 +34,7 @@ import { ref, computed, onMounted, watch } from 'vue';
 import SearchBox from '@/components/shared/SearchBox.vue';
 import MembershipTable from '@/components/memberships/MembershipTable.vue';
 import Pagination from '@/components/members/Pagination.vue';
-import { IPC_CHANNELS } from '@electron/ipc/ipcConstant.js';
+import { IPC_CHANNELS } from '@/../electron/ipc/ipcConstant.js';
 import { ROUTES } from '@/router/routerConst'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()

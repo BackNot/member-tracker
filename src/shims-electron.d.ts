@@ -6,6 +6,7 @@ declare interface Window {
 
 // TypeScript declaration for Electron APIs exposed through preload script
 interface ElectronAPI {
+  backup: any;
   ipcRenderer: {
     invoke: (channel: string, ...args: any[]) => Promise<any>;
   };

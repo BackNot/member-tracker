@@ -1,11 +1,11 @@
 export interface SelectOption {
-  value: string | number
+  value: string | number 
   label: string
 }
 
 export interface MemberMembershipFormData {
-  member: number|null
-  selectedOption: string
+  memberId: number|null
+  membershipId: number
   startDate: string
   endDate: string
 }

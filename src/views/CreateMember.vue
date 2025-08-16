@@ -45,7 +45,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { ROUTES } from '../router/routerConst';
-import { IPC_CHANNELS } from '../../electron/ipc/ipcConstant.js';
+import { IPC_CHANNELS } from '@/../electron/ipc/ipcConstant.js';
 import Breadcrumbs from '@/components/shared/Breadcrumbs.vue';
 import MemberMembershipTable from '@/components/members/MemberMembershipTable.vue';
 import CreateMemberForm from '@/components/members/CreateMemberForm.vue';
@@ -144,6 +144,7 @@ const softDeleteMemberMembership = async (id: number) => {
 };
 
 const createMemberMembership = async (membershipData: MemberMembershipFormData) => {  
+  console.log(membershipData);
   const result = await ipc?.invoke(IPC_CHANNELS.MEMBER_MEMBERSHIP.CREATE, membershipData);
   await reloadMemberMemberhips(route.params.id);
 };

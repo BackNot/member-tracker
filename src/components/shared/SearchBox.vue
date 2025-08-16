@@ -4,7 +4,7 @@
     <div class="relative w-full md:w-64">
       <input
         :value="searchTerm"
-        @input="$emit('update:searchTerm', $event.target.value)"
+        @input="$emit('update:searchTerm', ($event.target as HTMLInputElement).value)"
         type="text"
         :placeholder="searchPlaceholder"
         class="w-full px-4 py-2 pl-10 border border-gray-300 rounded-md focus:outline-none focus:border-gray-500 transition-colors duration-200"

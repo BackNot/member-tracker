@@ -35,7 +35,7 @@ import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { ROUTES } from '../router/routerConst';
 import type { MembershipForm } from '@/types/memberships';
-import { IPC_CHANNELS } from '../../electron/ipc/ipcConstant.js';
+import { IPC_CHANNELS } from '@/../electron/ipc/ipcConstant.js';
 import Breadcrumbs from '@/components/shared/Breadcrumbs.vue';
 import { useI18n } from 'vue-i18n';
 import CreateMembershipForm from '@/components/members/CreateMembershipForm.vue';
