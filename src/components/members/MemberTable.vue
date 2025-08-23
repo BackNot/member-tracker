@@ -111,7 +111,7 @@ const getMembershipEndDate = (memberId: number): string => {
   const membership = props.memberships.find(m => m.memberId === memberId);
   
   if (!membership) {
-    return t("members.no_active_membership");
+    return "";
   }
 
   if (!membership.endDate) {

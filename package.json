@@ -1,6 +1,6 @@
 {
   "name": "member-tracker",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "main": "electron/main.mjs",
@@ -65,11 +65,21 @@
     ".env"
   ],
   "mac": {
-    "target": ["dmg"],
+    "target": [
+      {
+        "target": "dmg",
+        "arch": ["x64", "arm64"]
+      }
+    ],
     "category": "public.app-category.productivity"
   },
   "win": {
-    "target": "nsis",
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      }
+    ],
     "icon": "build/icon.ico"
   },
   "nsis": {

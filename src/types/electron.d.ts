@@ -13,6 +13,19 @@ export interface ElectronAPI {
     delete: (fileId: string) => Promise<{ success: boolean; error?: string }>
     disconnect: () => Promise<{ success: boolean; error?: string }>
   }
+  notification: {
+    getAll: () => Promise<any[]>
+    getAllActive: (options?: any) => Promise<any[]>
+    getUnread: (options?: any) => Promise<any[]>
+    getById: (id: number) => Promise<any>
+    getByMemberMembership: (memberMembershipId: number, options?: any) => Promise<any[]>
+    create: (data: any) => Promise<any>
+    update: (values: any, options: any) => Promise<any>
+    markAsRead: (id: number) => Promise<any>
+    markAllAsRead: (memberMembershipId?: number) => Promise<any>
+    softDelete: (id: number) => Promise<any>
+    restore: (id: number) => Promise<any>
+  }
 }
 
 export interface BackupItem {
