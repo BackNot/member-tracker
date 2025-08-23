@@ -53,19 +53,32 @@
     "wait-on": "^8.0.3"
   },
   "build": {
-    "appId": "com.member-tracker.app",
-    "productName": "Member Tracker",
-    "directories": {
-      "output": "dist_electron"
-    },
-    "files": [
-      "dist/**/*",
-      "electron/**/*",
-      "package.json"
-    ],
-    "mac": {
-      "target": ["dmg"],
-      "category": "public.app-category.productivity"
-    }
+  "appId": "com.member-tracker.app",
+  "productName": "Member Tracker",
+  "directories": {
+    "output": "dist_electron"
+  },
+  "files": [
+    "dist/**/*",
+    "electron/**/*",
+    "package.json",
+    ".env"
+  ],
+  "mac": {
+    "target": ["dmg"],
+    "category": "public.app-category.productivity"
+  },
+  "win": {
+    "target": "nsis",
+    "icon": "build/icon.ico"
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": true,
+    "allowElevation": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "Member Tracker"
   }
+}
 }
