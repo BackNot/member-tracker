@@ -5,9 +5,11 @@ import { fileURLToPath } from 'url';
 import { registerMemberHandlers } from './ipc/memberHandlers.js';
 import { registerMembershipHandlers } from './ipc/membershipHandlers.js';
 import { registerMemberMembershipHandlers } from './ipc/memberMembershipHandlers.js';
+import { registerNotificationHandlers } from './ipc/notificationHandlers.js';
 import { registerBackupHandlers } from './ipc/backupHandlers.js';
+import { NotificationService } from './services/notificationService.js';
 
-import './database.js';
+import { databaseReady } from './database.js';
 import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
@@ -35,13 +37,24 @@ function createWindow() {
 }
 
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   createWindow();
+  
+  // Wait for database to be ready before registering handlers and checking memberships
+  await databaseReady;
+  
   registerMemberHandlers();
   registerMembershipHandlers();
   registerMemberMembershipHandlers();
-
+  registerNotificationHandlers();
   registerBackupHandlers();
+  
+  // Check for expired memberships and create notifications on startup
+  try {
+    await NotificationService.checkExpiredMembershipsAndCreateNotifications();
+  } catch (error) {
+    console.error('Error checking expired memberships on startup:', error);
+  }
   
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

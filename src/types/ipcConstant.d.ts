@@ -29,6 +29,19 @@ declare module "../../electron/ipc/ipcConstant.js" {
       SOFT_DELETE: 'membership:softDelete',
       RESTORE: 'membership:restore'
     },
+     NOTIFICATION: {
+      GET_ALL_ACTIVE: 'notification:getAllActive',
+      GET_ALL: 'notification:getAll',
+      GET_BY_ID: 'notification:getById',
+      GET_UNREAD: 'notification:getUnread',
+      GET_BY_MEMBER_MEMBERSHIP: 'notification:getByMemberMembership',
+      CREATE: 'notification:create',
+      UPDATE: 'notification:update',
+      MARK_AS_READ: 'notification:markAsRead',
+      MARK_ALL_AS_READ: 'notification:markAllAsRead',
+      SOFT_DELETE: 'notification:softDelete',
+      RESTORE: 'notification:restore'
+    },
     APP: {
       GET_VERSION: 'app:getVersion',
       CHECK_UPDATES: 'app:checkUpdates'
@@ -59,7 +72,8 @@ declare module "@/../electron/ipc/ipcConstant.js" {
       SOFT_DELETE: 'memberMembership:softDelete',
       RESTORE: 'memberMembership:restore',
       FIND_ONE: 'memberMembership:findOne',
-      FIND_ALL: 'memberMembership:findAll'
+      FIND_ALL: 'memberMembership:findAll',
+      GET_ALL_ACTIVE_BY_MEMBERS: "memberMembership:getLatestActiveMemberships"
     },
      MEMBERSHIP: {
       GET_ALL_ACTIVE: 'membership:getAllActive',
@@ -69,6 +83,19 @@ declare module "@/../electron/ipc/ipcConstant.js" {
       UPDATE: 'membership:update',
       SOFT_DELETE: 'membership:softDelete',
       RESTORE: 'membership:restore'
+    },
+     NOTIFICATION: {
+      GET_ALL_ACTIVE: 'notification:getAllActive',
+      GET_ALL: 'notification:getAll',
+      GET_BY_ID: 'notification:getById',
+      GET_UNREAD: 'notification:getUnread',
+      GET_BY_MEMBER_MEMBERSHIP: 'notification:getByMemberMembership',
+      CREATE: 'notification:create',
+      UPDATE: 'notification:update',
+      MARK_AS_READ: 'notification:markAsRead',
+      MARK_ALL_AS_READ: 'notification:markAllAsRead',
+      SOFT_DELETE: 'notification:softDelete',
+      RESTORE: 'notification:restore'
     },
     APP: {
       GET_VERSION: 'app:getVersion',

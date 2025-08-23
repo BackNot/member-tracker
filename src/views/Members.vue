@@ -14,6 +14,7 @@
     
     <MemberTable
       :members="paginatedMembers"
+      :memberships="memberships"
       :loading="loading"
       :searchTerm="searchTerm"
       @deleteMember="softDeleteMember"
@@ -54,6 +55,7 @@ interface Member {
 
 // Component state
 const members = ref<Member[]>([]);
+const memberships = ref<any[]>([]); // Changed from computed to ref
 const loading = ref(false);
 
 // Search and pagination state
@@ -100,8 +102,38 @@ const totalPages = computed(() => {
   return Math.max(1, Math.ceil(filteredMembers.value.length / itemsPerPage));
 });
 
+// Fetch memberships for current members
+const fetchMemberships = async () => {
+  if (members.value.length === 0) {
+    memberships.value = [];
+    return;
+  }
+
+  try {
+    // Extract member IDs from the members array
+    const memberIds = members.value.map(member => member.id);
+    
+    console.log('Fetching memberships for member IDs:', memberIds);
+    
+    const result = await ipc.invoke(IPC_CHANNELS.MEMBER_MEMBERSHIP.GET_ALL_ACTIVE_BY_MEMBERS, memberIds);
+    
+    console.log('Memberships result:', result);
+    memberships.value = result || [];
+  } catch (error) {
+    console.error('Error fetching memberships:', error);
+    memberships.value = [];
+  }
+};
+
+// Watch for changes in members and fetch memberships accordingly
+watch(members, () => {
+  fetchMemberships();
+}, { immediate: false });
+
 // Refresh members
 const refreshMembers = async () => {  
+  loading.value = true;
+  
   try {
     const data = await ipc.invoke(IPC_CHANNELS.MEMBER.GET_ALL_ACTIVE, {
         order: [['createdAt', 'DESC']]
@@ -110,9 +142,13 @@ const refreshMembers = async () => {
     
     // Reset to first page after refresh
     currentPage.value = 1;
+    
+    // Fetch memberships for the loaded members
+    await fetchMemberships();
   } catch (e: any) {
     console.error('Error loading members:', e);
     members.value = [];
+    memberships.value = [];
   } finally {
     loading.value = false;
   }
@@ -120,6 +156,8 @@ const refreshMembers = async () => {
 
 // Soft delete a member
 const softDeleteMember = async (id: number) => {  
+  loading.value = true;
+  
   try {
     await ipc.invoke(IPC_CHANNELS.MEMBER.SOFT_DELETE, id);
     await refreshMembers();

@@ -5,6 +5,8 @@ import Member from './models/Member.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import Membership from './models/Membership.js';
+import Notification from './models/Notification.js';
+
 import MemberMembership from './models/MemberMembership.js';
 import { setupAssociations } from './associations.js';
 
@@ -25,7 +27,8 @@ const initializeDatabase = async () => {
     const models = {
       Member: Member.init(sequelize),
       Membership: Membership.init(sequelize),
-      MemberMembership: MemberMembership.init(sequelize)
+      MemberMembership: MemberMembership.init(sequelize),
+      Notification: Notification.init(sequelize)
     };
 
     setupAssociations();
@@ -38,8 +41,8 @@ const initializeDatabase = async () => {
     throw err;
   }
 };
-// Automatically initialize on import
-initializeDatabase().catch(console.error);
+// Export the initialization promise for external use
+export const databaseReady = initializeDatabase();
 
 // Ensure cleanup on app quit
 app.on('will-quit', async () => {

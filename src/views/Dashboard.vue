@@ -89,13 +89,18 @@
         </div>
       </div>
     </div>
+
+    <!-- Notifications Section -->
+    <NotificationList ref="notificationListRef" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-const { t }  = useI18n();
+import NotificationList from '../components/notifications/NotificationList.vue'
+
+const { t } = useI18n();
 
 const formattedDate = ref('')
 const isConnected = ref(false)
@@ -104,6 +109,7 @@ const authInProgress = ref(false)
 const message = ref('')
 const messageType = ref<'success' | 'error'>('success')
 const backups = ref<any[]>([])
+const notificationListRef = ref<InstanceType<typeof NotificationList>>()
 
 // Computed property for message styling
 const messageClass = computed(() => ({

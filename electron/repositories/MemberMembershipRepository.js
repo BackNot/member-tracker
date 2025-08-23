@@ -3,6 +3,7 @@
  */
 import BaseRepository from './BaseRepository.js';
 import MemberMembership from '../models/MemberMembership.js';
+import { Op } from 'sequelize'; // Add this import at the top
 
 console.log('Initializing MemberMembershipRepository...');
 
@@ -10,6 +11,59 @@ class MemberMembershipRepository extends BaseRepository {
   constructor() {
     console.log('MemberMembershipRepository constructor called, Member:', MemberMembership);
     super(MemberMembership);
+  }
+
+  async getLatestActiveMemberships(memberIds, options = {}) {
+    console.log('getLatestActiveMemberships called with memberIds:', memberIds);
+
+    if (!Array.isArray(memberIds) || memberIds.length === 0) {
+      return [];
+    }
+
+    // Remove the require statement - Op is now imported at the top
+    const currentDate = new Date();
+    
+    // First, get the latest start date for each member (only for ACTIVE memberships)
+    const latestDates = await this.model.findAll({
+      attributes: [
+        'memberId',
+        [this.model.sequelize.fn('MAX', this.model.sequelize.col('start_date')), 'latestStartDate']
+      ],
+      where: {
+        memberId: { [Op.in]: memberIds },
+        deletedAt: null,
+        startDate: { [Op.lte]: currentDate }, // Membership has started
+        endDate: { [Op.gte]: currentDate }    // Membership hasn't ended (ACTIVE)
+      },
+      group: ['memberId'],
+      raw: true
+    });
+
+    console.log('Latest dates found:', latestDates);
+
+    if (latestDates.length === 0) {
+      return [];
+    }
+
+    // Then get the actual memberships - FIXED VERSION
+    const whereConditions = latestDates.map(item => ({
+      memberId: item.memberId,
+      startDate: item.latestStartDate,  // Exact match for the latest start date
+      deletedAt: null,
+      endDate: { [Op.gte]: currentDate }  // Still active (only endDate check needed here)
+    }));
+
+    const result = await this.model.findAll({
+      where: {
+        [Op.or]: whereConditions
+      },
+      ...options,
+      raw: true, // Add this to return plain objects instead of Sequelize instances
+      order: [['memberId', 'ASC']]
+    });
+
+    console.log('Final memberships result:', result);
+    return result;
   }
 
   // Additional methods specific to Membership can be added here

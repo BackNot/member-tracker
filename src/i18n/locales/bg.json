@@ -1,4 +1,18 @@
 {
+  "notifications": {
+    "title": "Известия",
+    "unread": "непрочетени",
+    "mark_all_read": "Маркирай всички като прочетени",
+    "mark_read": "Маркирай като прочетено",
+    "loading": "Зареждане на известия...",
+    "no_notifications": "Няма известия",
+    "member": "Член",
+    "membership": "Членство",
+    "load_error": "Грешка при зареждане на известия",
+    "mark_read_error": "Грешка при маркиране на известие като прочетено",
+    "mark_all_read_error": "Грешка при маркиране на всички известия като прочетени",
+    "expired_membership": "Изтекло членство за {firstName} {lastName}"
+  },
   "dashboard": {
     "dont_forget": "Не забравяй да правиш копия на базата",
     "hello": "Здравей! Днес е",
@@ -91,7 +105,8 @@
     "last_name_required": "Фамилия е задължителна",
     "edit_old_member": "Редактирай член",
     "edit_member": "Редактирай член",
-    "edit": "Редактирай"
+    "edit": "Редактирай",
+    "current_membership_end_date": "Текущ абонамент до"
   },
    "memberships": {
     "id": "ID",

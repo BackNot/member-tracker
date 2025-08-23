@@ -6,6 +6,20 @@
     "auth_success": "Authenitcation succeed",
     "page_not_found": "Page not found"
   },
+  "notifications": {
+    "title": "Notifications",
+    "unread": "unread",
+    "mark_all_read": "Mark all as read",
+    "mark_read": "Mark as read",
+    "loading": "Loading notifications...",
+    "no_notifications": "No notifications",
+    "member": "Member",
+    "membership": "Membership",
+    "load_error": "Error loading notifications",
+    "mark_read_error": "Error marking notification as read",
+    "mark_all_read_error": "Error marking all notifications as read",
+    "expired_membership": "Expired membership for {firstName} {lastName}"
+  },
   "sidebar": {
     "dashboard": "Dashboard",
     "members": "Members",

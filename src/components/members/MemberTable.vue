@@ -8,8 +8,7 @@
         <tr>
           <th>{{ t("members.id") }}</th>
           <th>{{ t("members.name") }}</th>
-          <th>{{ t("members.description") }}</th>
-          <th>{{ t("members.created_at") }}</th>
+          <th>{{ t("members.current_membership_end_date") }}</th>
           <th>{{ t("members.actions") }}</th>
         </tr>
       </thead>
@@ -17,8 +16,7 @@
         <tr v-for="member in members" :key="member.id">
           <th>{{ member.id }}</th>
           <td>{{ member.firstName }} {{ member.lastName }} {{ member.nickname ? `(${member.nickname})` : '' }}</td>
-          <td class="max-w-xs truncate">{{ member.description || '-' }}</td>
-          <td>{{ formatDate(member.createdAt) }}</td>
+          <td>{{ getMembershipEndDate(member.id) }}</td>
           <td>
             <button
               @click="edit(member)"
@@ -54,7 +52,7 @@
       @confirmed="handleDeleteConfirmed"
     />
     
-    </template>
+</template>
 
 <script setup lang="ts">
 import DeleteModal from '@/components/shared/DeleteModal.vue';
@@ -71,10 +69,10 @@ const { t } = useI18n()
 
 const props = defineProps<{
   members: Member[];
+  memberships: any[]; // Add memberships prop
   loading: boolean;
   searchTerm?: string;
 }>()
-
 
 const itemToDelete = ref<Member|null>(null)
 const deleteModal = ref<InstanceType<typeof DeleteModal> | null>(null)
@@ -102,5 +100,24 @@ const handleDeleteConfirmed = () => {
 
 const edit = (user: Member) => {
   router.push({ name: ROUTE_NAMES.MEMBERS.CREATE, params: { id: user.id } })
+}
+
+// Function to get membership end date for a specific member
+const getMembershipEndDate = (memberId: number): string => {
+  if (!props.memberships || props.memberships.length === 0) {
+    return "-";
+  }
+
+  const membership = props.memberships.find(m => m.memberId === memberId);
+  
+  if (!membership) {
+    return t("members.no_active_membership");
+  }
+
+  if (!membership.endDate) {
+    return t("members.no_end_date");
+  }
+
+  return formatDate(membership.endDate);
 }
 </script>
