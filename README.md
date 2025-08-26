@@ -1,4 +1,5 @@
-# member-tracker
+# member-tracker - Electron and VueJS desktop app to manage members and their subscriptions.
+
 
 <img width="1705" height="438" alt="Screenshot 2025-08-26 at 23 00 39" src="https://github.com/user-attachments/assets/bb3c81df-6995-42ec-acbe-890fc1270e52" />
 
@@ -22,14 +23,6 @@ See [Vite Configuration Reference](https://vite.dev/config/).
 npm install
 ```
 
-### Compile and Hot-Reload for Development
-
 ```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
+npm run electron:dev
 ```
