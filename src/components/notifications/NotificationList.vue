@@ -44,17 +44,12 @@
                 {{ formatDate(notification.createdAt) }}
               </span>
             </div>
-            <p class="text-gray-800 font-semibold">
+            <p 
+              @click="onNotificationClick(notification)"
+              class="text-gray-800 font-semibold cursor-pointer hover:text-blue-600 transition-colors"
+            >
               {{ notification.message }}
             </p>
-            <div v-if="notification.memberMembership" class="mt-2 text-sm text-gray-600">
-              <span class="bg-gray-100 px-2 py-1 rounded">
-                {{ $t("notifications.member") }}: {{ notification.memberMembership.member?.firstName }} {{ notification.memberMembership.member?.lastName }}
-              </span>
-              <span class="bg-gray-100 px-2 py-1 rounded ml-2">
-                {{ $t("notifications.membership") }}: {{ notification.memberMembership.membership?.name }}
-              </span>
-            </div>
           </div>
           <button
             @click="markAsRead(notification.id)"
@@ -77,8 +72,12 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { ROUTES, ROUTE_NAMES } from '@/router/routerConst'
+import { IPC_CHANNELS } from '@/../electron/ipc/ipcConstant.js';
+import { useRouter } from 'vue-router'
 
 const { t } = useI18n()
+const router = useRouter()
 
 // Reactive state
 const notifications = ref<any[]>([])
@@ -104,6 +103,20 @@ const formatDate = (dateString: string) => {
     hour: '2-digit',
     minute: '2-digit'
   })
+}
+
+// @ts-ignore - Electron exposes this property in the preload script
+const ipc = window.electron.ipcRenderer;
+
+// Handle notification message click
+const onNotificationClick = async (notification: any) => {
+    const result = await ipc.invoke(IPC_CHANNELS.MEMBER_MEMBERSHIP.FIND_ONE, notification.memberMembershipId);
+    await router.push({ 
+        name: ROUTE_NAMES.MEMBERS.CREATE,
+        params: { 
+          id: result.member.id.toString() 
+        }
+      })
 }
 
 // Load notifications

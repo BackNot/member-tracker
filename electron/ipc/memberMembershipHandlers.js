@@ -30,7 +30,17 @@ export function registerMemberMembershipHandlers() {
 
     ipcMain.handle(IPC_CHANNELS.MEMBER_MEMBERSHIP.GET_ALL_ACTIVE_BY_MEMBERS, (_e, options) => memberMembershipRepo.getLatestActiveMemberships(options));
 
-  ipcMain.handle(IPC_CHANNELS.MEMBER_MEMBERSHIP.FIND_ONE, (_e, options) => memberMembershipRepo.findOne(options));
+ipcMain.handle(IPC_CHANNELS.MEMBER_MEMBERSHIP.FIND_ONE, (_e, memberMembershipId) => 
+  memberMembershipRepo.findOne({
+    where: { 
+      id: memberMembershipId 
+    },
+    include: [{
+      model: Member, // Your Member model
+      as: 'member'   // The alias if you have one defined
+    }]
+  })
+);
   
   ipcMain.handle(IPC_CHANNELS.MEMBER_MEMBERSHIP.FIND_ALL, async (_e, options = {}) => {
     const withMembership = await memberMembershipRepo.findActive({

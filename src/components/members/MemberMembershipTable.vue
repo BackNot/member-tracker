@@ -73,6 +73,7 @@
      <CreateMemberMembershipModal 
       ref="createMemberMembershipModal" 
       :options="options"
+      :rawOptions="rawOptionsRef"
       :memberId="memberId"
       @confirmed="handleFormSubmission"
     />
@@ -134,6 +135,7 @@ const handleDeleteConfirmed = () => {
 }
 
 const options = ref<SelectOption[]>([])
+const rawOptionsRef = ref<MembershipForm[]>([])
 
 onMounted(async () => {
   try {
@@ -149,7 +151,7 @@ onMounted(async () => {
 
     // Update the ref
     options.value = mappedOptions;
-    
+    rawOptionsRef.value = rawOptions;
     console.log('Loaded membership options:', mappedOptions.length);
   } catch (error) {
     console.error('Error loading membership options:', error);

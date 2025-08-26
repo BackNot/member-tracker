@@ -42,11 +42,11 @@
                                 {{ optionsLoading ? t("membermemberships.loading") : t("membermemberships.chooseOption") }}
                             </option>
                             <option 
-                                v-for="option in options" 
-                                :key="option.value" 
-                                :value="option.value"
+                                v-for="rawOption in rawOptions" 
+                                :key="rawOption.id!" 
+                                :value="rawOption.id"
                             >
-                                {{ option.label }}
+                                {{ rawOption.name }}
                             </option>
                         </select>
                         <!-- Loading spinner -->
@@ -117,12 +117,14 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import type { MemberMembershipFormData, SelectOption } from '@/types/membermemberships';
+import type { MembershipForm } from '@/types/memberships';
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
 const props = withDefaults(defineProps<{
   options?: SelectOption[]
+  rawOptions: MembershipForm[]
   optionsLoading?: boolean
   memberId: number|null
 }>(), {
@@ -144,6 +146,41 @@ const formData = ref<MemberMembershipFormData>({
   endDate: ''
 })
 
+// Helper function to format date as YYYY-MM-DD
+const formatDateForInput = (date: Date): string => {
+  return date.toISOString().split('T')[0]
+}
+
+// Helper function to add days to a date
+const addDaysToDate = (dateString: string, days: number): string => {
+  const date = new Date(dateString)
+  date.setDate(date.getDate() + days)
+  return formatDateForInput(date)
+}
+
+// Watch for membership selection changes
+watch(() => formData.value.membershipId, (newMembershipId) => {
+  if (newMembershipId && newMembershipId !== 0) {
+    // Find the selected rawOption
+    const selectedOption = props.rawOptions.find(option => option.id === newMembershipId)
+    
+    if (selectedOption && selectedOption.days) {
+      // Set startDate to current date
+      const today = new Date()
+      const todayString = formatDateForInput(today)
+      formData.value.startDate = todayString
+      
+      // Set endDate to startDate + days from the selected option
+      formData.value.endDate = addDaysToDate(todayString, selectedOption.days)
+    }
+  } else {
+    // Clear dates if no option is selected
+    formData.value.startDate = ''
+    formData.value.endDate = ''
+  }
+})
+
+// Existing watcher for startDate changes (keep this for manual date changes)
 watch(() => formData.value.startDate, (newStartDate) => {
   if (formData.value.endDate && newStartDate && formData.value.endDate < newStartDate) {
     formData.value.endDate = newStartDate
