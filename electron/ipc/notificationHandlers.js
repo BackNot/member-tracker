@@ -2,6 +2,9 @@
 import { ipcMain } from 'electron';
 import notificationRepo from '../repositories/NotificationRepository.js';
 import { IPC_CHANNELS } from './ipcConstant.js';
+import Notification from '../models/Notification.js';
+import MemberMembership from '../models/MemberMembership.js';
+import Member from '../models/Member.js';
 
 export function registerNotificationHandlers() {
   // Create handler
@@ -9,15 +12,23 @@ export function registerNotificationHandlers() {
   
   // Get all notifications handler
   ipcMain.handle(IPC_CHANNELS.NOTIFICATION.GET_ALL, async () => {
-    console.log('notificationRepo:', notificationRepo);
     try {
-      if (!notificationRepo || typeof notificationRepo.findAll !== 'function') {
-        console.error('notificationRepo is invalid or missing findAll method:', notificationRepo);
-        return [];
-      }
-      const result = await notificationRepo.findAll();
-      console.log('getAll result:', result);
-      return result || [];
+      const result = await Notification.findAll({
+        include: [
+          {
+            model: MemberMembership,
+            as: 'memberMembership',
+            include: [
+              {
+                model: Member,
+                as: 'member'
+              }
+            ]
+          }
+        ]
+      });
+      
+      return result.map(item => item.toJSON());
     } catch (error) {
       console.error(`Error in ${IPC_CHANNELS.NOTIFICATION.GET_ALL} handler:`, error);
       return [];

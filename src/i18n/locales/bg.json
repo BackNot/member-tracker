@@ -12,6 +12,7 @@
     "mark_read_error": "Грешка при маркиране на известие като прочетено",
     "mark_all_read_error": "Грешка при маркиране на всички известия като прочетени",
     "expired_membership": "Изтекло членство за {firstName} {lastName}",
+    "expired_on": "Изтекло на",
     "refresh": "Обнови",
     "refreshing": "Обновяване..."
   },

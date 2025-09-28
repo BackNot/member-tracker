@@ -48,7 +48,7 @@
             <div class="flex items-center gap-2 mb-2">
               <div class="w-2 h-2 rounded-full bg-red-500"></div>
               <span class="text-sm text-gray-500">
-                {{ formatDate(notification.createdAt) }}
+                {{ $t("notifications.expired_on") }}: {{ formatDate(notification.memberMembership?.endDate) }}
               </span>
             </div>
             <p 
@@ -102,13 +102,19 @@ const unreadNotifications = computed(() =>
 
 // Format date helper
 const formatDate = (dateString: string) => {
+  if (!dateString) {
+    return 'N/A'
+  }
+  
   const date = new Date(dateString)
-  return date.toLocaleString('bg-BG', {
+  if (isNaN(date.getTime())) {
+    return 'N/A'
+  }
+  
+  return date.toLocaleDateString('bg-BG', {
     year: 'numeric',
     month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
+    day: 'numeric'
   })
 }
 
