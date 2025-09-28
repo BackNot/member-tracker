@@ -11,7 +11,9 @@
     "load_error": "Грешка при зареждане на известия",
     "mark_read_error": "Грешка при маркиране на известие като прочетено",
     "mark_all_read_error": "Грешка при маркиране на всички известия като прочетени",
-    "expired_membership": "Изтекло членство за {firstName} {lastName}"
+    "expired_membership": "Изтекло членство за {firstName} {lastName}",
+    "refresh": "Обнови",
+    "refreshing": "Обновяване..."
   },
   "dashboard": {
     "dont_forget": "Не забравяй да правиш копия на базата",

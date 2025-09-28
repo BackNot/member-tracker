@@ -11,7 +11,9 @@
     "load_error": "Error loading notifications",
     "mark_read_error": "Error marking notification as read",
     "mark_all_read_error": "Error marking all notifications as read",
-    "expired_membership": "Expired membership for {firstName} {lastName}"
+    "expired_membership": "Expired membership for {firstName} {lastName}",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing..."
   },
   "dashboard": {
     "dont_forget": "Don't forget to backup the database",

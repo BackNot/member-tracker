@@ -3,6 +3,13 @@
     <div class="flex items-center justify-between mb-4">
       <h2 class="text-lg font-semibold text-gray-800">🔔 {{ $t("notifications.title") }}</h2>
       <div class="flex gap-2">
+        <button 
+          @click="loadNotifications"
+          :disabled="isLoading"
+          class="bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 text-white px-3 py-1 rounded text-sm transition-colors"
+        >
+          {{ isLoading ? $t("notifications.refreshing") : '🔄 ' + $t("notifications.refresh") }}
+        </button>
         <span v-if="unreadCount > 0" class="bg-red-500 text-white px-2 py-1 rounded-full text-xs">
           {{ unreadCount }} {{ $t("notifications.unread") }}
         </span>
