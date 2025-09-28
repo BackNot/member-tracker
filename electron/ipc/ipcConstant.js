@@ -18,7 +18,8 @@ export const IPC_CHANNELS = {
       RESTORE: 'memberMembership:restore',
       FIND_ONE: 'memberMembership:findOne',
       FIND_ALL: 'memberMembership:findAll',
-      GET_ALL_ACTIVE_BY_MEMBERS: "memberMembership:getLatestActiveMemberships"
+      GET_ALL_ACTIVE_BY_MEMBERS: "memberMembership:getLatestActiveMemberships",
+      GET_EXPIRATIONS_BY_MONTH: 'memberMembership:getExpirationsByMonth'
     },
      MEMBERSHIP: {
       GET_ALL_ACTIVE: 'membership:getAllActive',

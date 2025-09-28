@@ -152,5 +152,38 @@
     "next": "Next",
     "previous": "Previous",
     "page": "Page"
+  },
+  "calendar": {
+    "title": "Membership Expiration Calendar",
+    "loading": "Loading calendar...",
+    "expires_today": "Expires today",
+    "more": "more",
+    "expirations_on": "Expirations on",
+    "no_expirations": "No expirations for this day",
+    "membership_expires": "Membership expires",
+    "total_expirations": "total expirations",
+    "weekdays": {
+      "mon": "Mon",
+      "tue": "Tue", 
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    },
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    }
   }
 }

@@ -92,6 +92,9 @@
 
     <!-- Notifications Section -->
     <NotificationList ref="notificationListRef" />
+
+    <!-- Calendar Section -->
+    <ExpirationCalendar />
   </div>
 </template>
 
@@ -99,6 +102,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import NotificationList from '../components/notifications/NotificationList.vue'
+import ExpirationCalendar from '../components/calendar/ExpirationCalendar.vue'
 
 const { t } = useI18n();
 

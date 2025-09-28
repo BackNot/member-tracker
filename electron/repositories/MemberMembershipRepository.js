@@ -93,6 +93,30 @@ class MemberMembershipRepository extends BaseRepository {
       { where: { id } }
     );
   }
+
+  // Get expirations by month
+  async getExpirationsByMonth(year, month) {
+    const startDate = new Date(year, month - 1, 1);
+    const endDate = new Date(year, month, 0); // Last day of the month
+    
+    const result = await this.model.findAll({
+      where: {
+        endDate: {
+          [Op.between]: [startDate, endDate]
+        },
+        deletedAt: null
+      },
+      include: [
+        {
+          model: this.model.sequelize.models.Member,
+          as: 'member'
+        }
+      ],
+      order: [['endDate', 'ASC']]
+    });
+    
+    return result.map(item => item.toJSON());
+  }
 }
 
 // Create and export an instance of the repository

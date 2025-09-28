@@ -67,4 +67,15 @@ ipcMain.handle(IPC_CHANNELS.MEMBER_MEMBERSHIP.FIND_ONE, (_e, memberMembershipId)
   // Restore handler
   ipcMain.handle(IPC_CHANNELS.MEMBER_MEMBERSHIP.RESTORE, (_e, id) => memberMembershipRepo.restore(id));
   
+  // Get expirations by month handler
+  ipcMain.handle(IPC_CHANNELS.MEMBER_MEMBERSHIP.GET_EXPIRATIONS_BY_MONTH, async (_e, year, month) => {
+    try {
+      const result = await memberMembershipRepo.getExpirationsByMonth(year, month);
+      return result;
+    } catch (error) {
+      console.error(`Error in ${IPC_CHANNELS.MEMBER_MEMBERSHIP.GET_EXPIRATIONS_BY_MONTH} handler:`, error);
+      return [];
+    }
+  });
+  
 }

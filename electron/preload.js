@@ -30,5 +30,10 @@ contextBridge.exposeInMainWorld('electron', {
     markAllAsRead: (memberMembershipId) => ipcRenderer.invoke('notification:markAllAsRead', memberMembershipId),
     softDelete: (id) => ipcRenderer.invoke('notification:softDelete', id),
     restore: (id) => ipcRenderer.invoke('notification:restore', id)
+  },
+
+  // MemberMembership-specific APIs
+  memberMembership: {
+    getExpirationsByMonth: (year, month) => ipcRenderer.invoke('memberMembership:getExpirationsByMonth', year, month)
   }
 });

@@ -152,5 +152,38 @@
     "next": "Следваща",
     "previous": "Предишна",
     "page": "Страница"
+  },
+  "calendar": {
+    "title": "Календар на изтичащи членства",
+    "loading": "Зареждане на календара...",
+    "expires_today": "Изтича днес",
+    "more": "още",
+    "expirations_on": "Изтичания на",
+    "no_expirations": "Няма изтичания за този ден",
+    "membership_expires": "Членството изтича",
+    "total_expirations": "общо изтичания",
+    "weekdays": {
+      "mon": "Пн",
+      "tue": "Вт",
+      "wed": "Ср", 
+      "thu": "Чт",
+      "fri": "Пт",
+      "sat": "Сб",
+      "sun": "Нд"
+    },
+    "months": {
+      "january": "Януари",
+      "february": "Февруари",
+      "march": "Март",
+      "april": "Април",
+      "may": "Май",
+      "june": "Юни",
+      "july": "Юли",
+      "august": "Август",
+      "september": "Септември",
+      "october": "Октомври",
+      "november": "Ноември",
+      "december": "Декември"
+    }
   }
 }
