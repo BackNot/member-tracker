@@ -14,7 +14,7 @@
     />
     
     <form @submit.prevent="handleSubmit" class="p-6">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
             {{ t("memberships.name") }} <span class="text-red-600">*</span>
@@ -40,52 +40,54 @@
         </div>
 
         <div>
-          <label for="description" class="block text-sm font-medium text-gray-700 mb-1">
-            {{ t("memberships.description") }} <span class="text-red-600">*</span>
+          <label for="days" class="block text-sm font-medium text-gray-700 mb-1">
+            {{ t("memberships.days") }} <span class="text-red-600">*</span>
           </label>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <i class="pi pi-user text-gray-400"></i>
             </div>
             <input
-              id="description"
-              v-model="formData.description"
+              id="days"
+              v-model="formData.days"
               type="text"
               required
-              :placeholder="t('memberships.enter_description')"
+              :placeholder="t('memberships.enter_days')"
               class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-              :class="{'border-red-300 ring-1 ring-red-300': formErrors.description}"
-              aria-describedby="description-error"
+              :class="{'border-red-300 ring-1 ring-red-300': formErrors.days}"
+              aria-describedby="days-error"
             />
-          </div>
-          <p v-if="formErrors.description" id="description-error" class="mt-1 text-sm text-red-600">
-            <i class="pi pi-exclamation-circle mr-1"></i> {{ formErrors.description }}
-          </p>
-        </div>
-          <div>
-            <label for="days" class="block text-sm font-medium text-gray-700 mb-1">
-              {{ t("memberships.days") }} <span class="text-red-600">*</span>
-            </label>
-            <div class="relative">
-              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <i class="pi pi-user text-gray-400"></i>
-              </div>
-              <input
-                id="days"
-                v-model="formData.days"
-                type="text"
-                required
-                :placeholder="t('memberships.enter_days')"
-                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                :class="{'border-red-300 ring-1 ring-red-300': formErrors.days}"
-                aria-describedby="days-error"
-              />
-            </div>
           </div>
           <p v-if="formErrors.days" id="days-error" class="mt-1 text-sm text-red-600">
             <i class="pi pi-exclamation-circle mr-1"></i> {{ formErrors.days }}
           </p>
         </div>
+      </div>
+
+      <!-- Description with character count -->
+      <div class="mt-6">
+        <div class="flex justify-between">
+          <label for="description" class="block text-sm font-medium text-gray-700 mb-1">
+            {{ t("memberships.description") }} <span class="text-red-600">*</span>
+          </label>
+        </div>
+        <div>
+          <textarea
+            id="description"
+            v-model="formData.description"
+            rows="4"
+            maxlength="500"
+            required
+            :placeholder="t('memberships.enter_description')"
+            class="w-1/2 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            :class="{'border-red-300 ring-1 ring-red-300': formErrors.description}"
+            aria-describedby="description-error"
+          ></textarea>
+        </div>
+        <p v-if="formErrors.description" id="description-error" class="mt-1 text-sm text-red-600">
+          <i class="pi pi-exclamation-circle mr-1"></i> {{ formErrors.description }}
+        </p>
+      </div>
 
       <div class="mt-8 flex items-center justify-end space-x-4">
         <button
