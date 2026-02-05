@@ -1,14 +1,36 @@
 // electron/ipc/membershipHandlers.js
 import { ipcMain } from 'electron';
 import memberMembershipRepo from '../repositories/MemberMembershipRepository.js';
+import membershipRepo from '../repositories/MembershipRepository.js';
 import Member from '../models/Member.js';
 import Membership from '../models/Membership.js';
 
 import { IPC_CHANNELS } from './ipcConstant.js';
 
 export function registerMemberMembershipHandlers() {
-  // Create handler
-  ipcMain.handle(IPC_CHANNELS.MEMBER_MEMBERSHIP.CREATE, (_e, data) => memberMembershipRepo.create(data));
+  // Create handler - enriches data with trainings from the membership type
+  ipcMain.handle(IPC_CHANNELS.MEMBER_MEMBERSHIP.CREATE, async (_e, data) => {
+    // Fetch the membership type to get trainings count
+    const membershipType = await membershipRepo.findById(data.membershipId);
+
+    const enrichedData = {
+      ...data,
+      totalTrainings: membershipType?.trainings ?? null,
+      remainingTrainings: membershipType?.trainings ?? null
+    };
+
+    return memberMembershipRepo.create(enrichedData);
+  });
+
+  // Subtract training handler
+  ipcMain.handle(IPC_CHANNELS.MEMBER_MEMBERSHIP.SUBTRACT_TRAINING, async (_e, memberMembershipId) => {
+    return memberMembershipRepo.subtractTraining(memberMembershipId);
+  });
+
+  // Add training handler
+  ipcMain.handle(IPC_CHANNELS.MEMBER_MEMBERSHIP.ADD_TRAINING, async (_e, memberMembershipId) => {
+    return memberMembershipRepo.addTraining(memberMembershipId);
+  });
   
   // Get all members handler
   ipcMain.handle(IPC_CHANNELS.MEMBER_MEMBERSHIP.GET_ALL, async () => {
@@ -77,5 +99,15 @@ ipcMain.handle(IPC_CHANNELS.MEMBER_MEMBERSHIP.FIND_ONE, (_e, memberMembershipId)
       return [];
     }
   });
-  
+
+  // Get training logs for a member membership
+  ipcMain.handle(IPC_CHANNELS.TRAINING_LOG.GET_BY_MEMBER_MEMBERSHIP, async (_e, memberMembershipId) => {
+    try {
+      return await memberMembershipRepo.getTrainingLogs(memberMembershipId);
+    } catch (error) {
+      console.error('Error getting training logs:', error);
+      return [];
+    }
+  });
+
 }

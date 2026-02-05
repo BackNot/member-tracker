@@ -40,17 +40,38 @@
         </div>
 
         <div>
+          <label for="type" class="block text-sm font-medium text-gray-700 mb-1">
+            {{ t("memberships.type") }} <span class="text-red-600">*</span>
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="pi pi-tag text-gray-400"></i>
+            </div>
+            <select
+              id="type"
+              v-model="formData.type"
+              required
+              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+            >
+              <option value="time">{{ t("memberships.type_time") }}</option>
+              <option value="training">{{ t("memberships.type_training") }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
           <label for="days" class="block text-sm font-medium text-gray-700 mb-1">
             {{ t("memberships.days") }} <span class="text-red-600">*</span>
           </label>
           <div class="relative">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <i class="pi pi-user text-gray-400"></i>
+              <i class="pi pi-calendar text-gray-400"></i>
             </div>
             <input
               id="days"
               v-model="formData.days"
-              type="text"
+              type="number"
+              min="1"
               required
               :placeholder="t('memberships.enter_days')"
               class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
@@ -60,6 +81,31 @@
           </div>
           <p v-if="formErrors.days" id="days-error" class="mt-1 text-sm text-red-600">
             <i class="pi pi-exclamation-circle mr-1"></i> {{ formErrors.days }}
+          </p>
+        </div>
+
+        <div v-if="formData.type === 'training'">
+          <label for="trainings" class="block text-sm font-medium text-gray-700 mb-1">
+            {{ t("memberships.trainings") }} <span class="text-red-600">*</span>
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <i class="pi pi-ticket text-gray-400"></i>
+            </div>
+            <input
+              id="trainings"
+              v-model="formData.trainings"
+              type="number"
+              min="1"
+              :required="formData.type === 'training'"
+              :placeholder="t('memberships.enter_trainings')"
+              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+              :class="{'border-red-300 ring-1 ring-red-300': formErrors.trainings}"
+              aria-describedby="trainings-error"
+            />
+          </div>
+          <p v-if="formErrors.trainings" id="trainings-error" class="mt-1 text-sm text-red-600">
+            <i class="pi pi-exclamation-circle mr-1"></i> {{ formErrors.trainings }}
           </p>
         </div>
       </div>
@@ -123,6 +169,7 @@ interface FormErrors {
   name: string;
   description: string;
   days: string;
+  trainings: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -139,12 +186,15 @@ const formData = reactive<MembershipForm>({
   name: '',
   description: '',
   days: 0,
+  type: 'time',
+  trainings: null,
 });
 
 const formErrors = reactive<FormErrors>({
   name: '',
   description: '',
-  days: ''
+  days: '',
+  trainings: ''
 });
 
 watch(() => props.initialData, (newData) => {
@@ -155,32 +205,40 @@ watch(() => props.initialData, (newData) => {
 
 const validateForm = (): boolean => {
   let isValid = true;
-  
+
   formErrors.name = '';
   formErrors.days = '';
-  
+  formErrors.trainings = '';
+
   if (!formData.name.trim()) {
     formErrors.name = t("memberships.name_required");
     isValid = false;
   }
-  
+
   if (formData.days <= 0) {
     formErrors.days = t("membership.days_required");
     isValid = false;
   }
-  
+
+  if (formData.type === 'training' && (!formData.trainings || formData.trainings <= 0)) {
+    formErrors.trainings = t("memberships.trainings_required");
+    isValid = false;
+  }
+
   return isValid;
 };
 
 const handleSubmit = (): void => {
   if (!validateForm()) return;
-  
+
   const membershipData: MembershipPayload = {
     name: formData.name.trim(),
     description: formData.description.trim(),
-    days: formData.days
+    days: formData.days,
+    type: formData.type,
+    trainings: formData.type === 'training' ? formData.trainings : null
   };
-  
+
   emit('submit', membershipData);
 };
 </script>

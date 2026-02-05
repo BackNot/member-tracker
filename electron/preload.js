@@ -35,6 +35,9 @@ contextBridge.exposeInMainWorld('electron', {
 
   // MemberMembership-specific APIs
   memberMembership: {
-    getExpirationsByMonth: (year, month) => ipcRenderer.invoke('memberMembership:getExpirationsByMonth', year, month)
+    getExpirationsByMonth: (year, month) => ipcRenderer.invoke('memberMembership:getExpirationsByMonth', year, month),
+    subtractTraining: (id) => ipcRenderer.invoke('memberMembership:subtractTraining', id),
+    addTraining: (id) => ipcRenderer.invoke('memberMembership:addTraining', id),
+    getTrainingLogs: (memberMembershipId) => ipcRenderer.invoke('trainingLog:getByMemberMembership', memberMembershipId)
   }
 });

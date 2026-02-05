@@ -57,7 +57,17 @@
     "chooseOption": "Избери опция...",
     "startDate": "Начална дата",
     "endDate": "Крайна дата",
-    "cancel": "Отказ"
+    "cancel": "Отказ",
+    "trainings": "Тренировки",
+    "duration": "Продължителност",
+    "use_training": "Използвай тренировка",
+    "add_training": "Добави тренировка",
+    "view_history": "Виж история",
+    "training_history": "История на тренировките",
+    "no_history": "Няма записани тренировки",
+    "added": "добавена",
+    "used": "използвана",
+    "close": "Затвори"
   },
   "drive": {
     "auth_fail": "Неуспешна връзка",
@@ -140,7 +150,14 @@
     "edit": "Редактирай",
     "edit_membership": "Редактирай членство",
     "save_membership": "Запази членство",
-    "edit_information": "Редактирай тип членство"
+    "edit_information": "Редактирай тип членство",
+    "type": "Тип",
+    "type_time": "Времеви",
+    "type_training": "С тренировки",
+    "trainings": "Тренировки",
+    "enter_trainings": "Въведи брой тренировки",
+    "trainings_required": "Броят тренировки е задължителен",
+    "name_required": "Името е задължително"
   },
   "pagination": {
     "showing": "Показване",

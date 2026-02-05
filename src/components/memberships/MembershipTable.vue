@@ -8,17 +8,25 @@
         <tr>
           <th>{{ t("memberships.id") }}</th>
           <th>{{ t("memberships.name") }}</th>
+          <th>{{ t("memberships.type") }}</th>
           <th>{{ t("memberships.description") }}</th>
           <th>{{ t("memberships.days") }}</th>
+          <th>{{ t("memberships.trainings") }}</th>
           <th>{{ t("memberships.actions") }}</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="membership in memberships" :key="membership.id">
           <th>{{ membership.id }}</th>
-          <td>{{ membership.name }} </td>
+          <td>{{ membership.name }}</td>
+          <td>
+            <span :class="membership.type === 'training' ? 'badge badge-primary' : 'badge badge-secondary'">
+              {{ membership.type === 'training' ? t("memberships.type_training") : t("memberships.type_time") }}
+            </span>
+          </td>
           <td class="max-w-xs truncate">{{ membership.description }}</td>
-          <td>{{ membership.days }} </td>
+          <td>{{ membership.days }}</td>
+          <td>{{ membership.trainings ?? '-' }}</td>
           <td>
             <button
               @click="edit(membership)"
@@ -37,7 +45,7 @@
           </td>
         </tr>
         <tr v-if="memberships.length === 0">
-          <td colspan="5" class="text-center text-gray-500 py-4">
+          <td colspan="7" class="text-center text-gray-500 py-4">
             {{ t("memberships.not_found") }}
           </td>
         </tr>
@@ -73,6 +81,8 @@ interface Membership {
   name: string;
   description: string;
   days: number;
+  type: 'time' | 'training';
+  trainings: number | null;
 }
 
 const props = defineProps<{

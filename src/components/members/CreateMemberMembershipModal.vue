@@ -60,6 +60,17 @@
                             </svg>
                         </div>
                     </div>
+
+                    <!-- Selected membership info -->
+                    <div v-if="selectedMembership" class="mt-2 p-2 bg-gray-50 rounded text-sm">
+                        <span class="text-gray-600">{{ t("membermemberships.duration") }}: </span>
+                        <span class="font-medium">{{ selectedMembership.days }} {{ t("memberships.days") }}</span>
+                        <template v-if="selectedMembership.type === 'training' && selectedMembership.trainings">
+                            <span class="mx-2">|</span>
+                            <span class="text-gray-600">{{ t("membermemberships.trainings") }}: </span>
+                            <span class="font-medium">{{ selectedMembership.trainings }}</span>
+                        </template>
+                    </div>
                 </div>
 
                 <!-- Start Date -->
@@ -185,6 +196,14 @@ watch(() => formData.value.startDate, (newStartDate) => {
   if (formData.value.endDate && newStartDate && formData.value.endDate < newStartDate) {
     formData.value.endDate = newStartDate
   }
+})
+
+// Get selected membership details
+const selectedMembership = computed(() => {
+  if (!formData.value.membershipId || formData.value.membershipId === 0) {
+    return null
+  }
+  return props.rawOptions.find(option => option.id === formData.value.membershipId) || null
 })
 
 // Form validation

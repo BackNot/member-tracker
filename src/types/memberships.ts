@@ -6,6 +6,8 @@ export interface MembershipForm {
   name: string;
   description: string;
   days: number;
+  type: 'time' | 'training';
+  trainings: number | null;
 }
 
 export interface MemberMembership {
@@ -14,6 +16,8 @@ export interface MemberMembership {
   membership: MembershipForm;
   startDate: string;
   endDate: string;
+  totalTrainings: number | null;
+  remainingTrainings: number | null;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
@@ -23,6 +27,8 @@ export interface MembershipPayload {
   name: string;
   description: string;
   days: number;
+  type: 'time' | 'training';
+  trainings: number | null;
 }
 
 

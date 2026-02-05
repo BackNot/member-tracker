@@ -26,7 +26,8 @@
           <th>{{ t("membermemberships.id") }}</th>
           <th>{{ t("membermemberships.name") }}</th>
           <th>{{ t("membermemberships.start_date") }}</th>
-        <th>{{ t("membermemberships.end_date") }}</th>
+          <th>{{ t("membermemberships.end_date") }}</th>
+          <th>{{ t("membermemberships.trainings") }}</th>
           <th>{{ t("members.actions") }}</th>
         </tr>
       </thead>
@@ -43,6 +44,41 @@
             {{ formatDate(memberMembership.endDate) }}
           </td>
           <td>
+            <template v-if="memberMembership.totalTrainings !== null">
+              <div class="flex items-center gap-2">
+                <button
+                  v-if="memberMembership.remainingTrainings < memberMembership.totalTrainings"
+                  @click="addTraining(memberMembership)"
+                  class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs hover:bg-green-200 flex items-center"
+                  :title="t('membermemberships.add_training')"
+                >
+                  <i class="pi pi-plus"></i>
+                </button>
+                <span :class="getTrainingsClass(memberMembership)">
+                  {{ memberMembership.remainingTrainings }} / {{ memberMembership.totalTrainings }}
+                </span>
+                <button
+                  v-if="memberMembership.remainingTrainings > 0 && !isExpired(memberMembership)"
+                  @click="subtractTraining(memberMembership)"
+                  class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs hover:bg-blue-200 flex items-center"
+                  :title="t('membermemberships.use_training')"
+                >
+                  <i class="pi pi-minus"></i>
+                </button>
+                <button
+                  @click="showTrainingHistory(memberMembership)"
+                  class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs hover:bg-gray-200 flex items-center"
+                  :title="t('membermemberships.view_history')"
+                >
+                  <i class="pi pi-history"></i>
+                </button>
+              </div>
+            </template>
+            <template v-else>
+              <span class="text-gray-400">-</span>
+            </template>
+          </td>
+          <td>
             <button
               @click="confirmDelete(memberMembership)"
               class="px-2 py-1 bg-red-100 text-red-800 rounded text-xs hover:bg-red-200 flex items-center ml-2 inline-block"
@@ -52,7 +88,7 @@
           </td>
         </tr>
         <tr v-if="memberMemberships.length === 0">
-          <td colspan="5" class="text-center text-gray-500 py-4">
+          <td colspan="6" class="text-center text-gray-500 py-4">
             {{ t("membermemberships.not_found") }}
           </td>
         </tr>
@@ -70,14 +106,55 @@
       @confirmed="handleDeleteConfirmed"
     />
 
-     <CreateMemberMembershipModal 
-      ref="createMemberMembershipModal" 
+     <CreateMemberMembershipModal
+      ref="createMemberMembershipModal"
       :options="options"
       :rawOptions="rawOptionsRef"
       :memberId="memberId"
       @confirmed="handleFormSubmission"
     />
 
+    <!-- Training History Modal -->
+    <dialog ref="historyModal" class="backdrop:bg-gray-900 backdrop:bg-opacity-50 bg-white rounded-xl shadow-2xl border-0 p-0 max-w-md w-full mx-auto">
+      <div class="p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-gray-900">
+            <i class="pi pi-history mr-2 text-blue-600"></i>
+            {{ t("membermemberships.training_history") }}
+          </h3>
+          <button @click="closeHistoryModal" class="text-gray-400 hover:text-gray-600">
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+
+        <div v-if="historyLoading" class="text-center py-4">
+          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
+        </div>
+
+        <div v-else-if="trainingLogs.length === 0" class="text-center py-4 text-gray-500">
+          {{ t("membermemberships.no_history") }}
+        </div>
+
+        <div v-else class="max-h-80 overflow-y-auto">
+          <ul class="space-y-2">
+            <li v-for="log in trainingLogs" :key="log.id" class="flex items-center gap-3 p-2 rounded"
+                :class="log.action === 'add' ? 'bg-green-50' : 'bg-red-50'">
+              <i :class="log.action === 'add' ? 'pi pi-plus-circle text-green-600' : 'pi pi-minus-circle text-red-600'"></i>
+              <span class="text-gray-700">{{ formatDateTime(log.usedAt) }}</span>
+              <span :class="log.action === 'add' ? 'text-green-600 text-xs' : 'text-red-600 text-xs'">
+                {{ log.action === 'add' ? t("membermemberships.added") : t("membermemberships.used") }}
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="mt-4 pt-4 border-t">
+          <button @click="closeHistoryModal" class="w-full px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300">
+            {{ t("membermemberships.close") }}
+          </button>
+        </div>
+      </div>
+    </dialog>
 
 </template>
 
@@ -106,6 +183,9 @@ const { t } = useI18n()
 const itemToDelete = ref<MemberMembership|null>(null)
 const deleteModal = ref<InstanceType<typeof DeleteModal> | null>(null)
 const createMemberMembershipModal = ref<InstanceType<typeof CreateMemberMembershipModal> | null>(null)
+const historyModal = ref<HTMLDialogElement | null>(null)
+const trainingLogs = ref<any[]>([])
+const historyLoading = ref(false)
 
 const confirmDelete = (membership: MemberMembership) => {
   itemToDelete.value = membership
@@ -124,7 +204,66 @@ const deleteDescription = computed(() => {
 const emit = defineEmits<{
   deleteMemberMembership: [id: number];
   createMemberMembership: [id: MemberMembershipFormData];
+  subtractTraining: [id: number];
+  addTraining: [id: number];
 }>();
+
+// Helper function to get color class for trainings count
+const getTrainingsClass = (mm: MemberMembership) => {
+  if (mm.remainingTrainings === null) return '';
+  if (mm.remainingTrainings === 0) return 'text-red-600 font-bold';
+  if (mm.remainingTrainings <= 3) return 'text-orange-600 font-semibold';
+  return 'text-green-600';
+};
+
+// Check if membership is expired
+const isExpired = (mm: MemberMembership) => {
+  const endDateExpired = new Date(mm.endDate) < new Date();
+  const trainingsExpired = mm.remainingTrainings === 0 && mm.totalTrainings !== null;
+  return endDateExpired || trainingsExpired;
+};
+
+// Subtract one training
+const subtractTraining = (mm: MemberMembership) => {
+  emit('subtractTraining', mm.id);
+};
+
+// Add one training back
+const addTraining = (mm: MemberMembership) => {
+  emit('addTraining', mm.id);
+};
+
+// Show training history modal
+const showTrainingHistory = async (mm: MemberMembership) => {
+  historyLoading.value = true;
+  trainingLogs.value = [];
+  historyModal.value?.showModal();
+
+  try {
+    trainingLogs.value = await window.electron.memberMembership.getTrainingLogs(mm.id);
+  } catch (error) {
+    console.error('Error loading training logs:', error);
+  } finally {
+    historyLoading.value = false;
+  }
+};
+
+// Close training history modal
+const closeHistoryModal = () => {
+  historyModal.value?.close();
+};
+
+// Format date time for display
+const formatDateTime = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleString('bg-BG', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};
 
 
 const handleDeleteConfirmed = () => {

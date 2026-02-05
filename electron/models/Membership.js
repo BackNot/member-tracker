@@ -21,7 +21,17 @@ class Membership extends Model {
           type: DataTypes.INTEGER,
           allowNull: false
         },
-          deletedAt: {
+        type: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          defaultValue: 'time'  // 'time' or 'training'
+        },
+        trainings: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+          defaultValue: null
+        },
+        deletedAt: {
           type: DataTypes.DATE,
           allowNull: true
         }

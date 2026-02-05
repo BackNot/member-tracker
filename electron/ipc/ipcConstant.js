@@ -19,7 +19,9 @@ export const IPC_CHANNELS = {
       FIND_ONE: 'memberMembership:findOne',
       FIND_ALL: 'memberMembership:findAll',
       GET_ALL_ACTIVE_BY_MEMBERS: "memberMembership:getLatestActiveMemberships",
-      GET_EXPIRATIONS_BY_MONTH: 'memberMembership:getExpirationsByMonth'
+      GET_EXPIRATIONS_BY_MONTH: 'memberMembership:getExpirationsByMonth',
+      SUBTRACT_TRAINING: 'memberMembership:subtractTraining',
+      ADD_TRAINING: 'memberMembership:addTraining'
     },
      MEMBERSHIP: {
       GET_ALL_ACTIVE: 'membership:getAllActive',
@@ -43,6 +45,9 @@ export const IPC_CHANNELS = {
       SOFT_DELETE: 'notification:softDelete',
       RESTORE: 'notification:restore',
       CHECK_EXPIRED: 'notification:checkExpired'
+    },
+    TRAINING_LOG: {
+      GET_BY_MEMBER_MEMBERSHIP: 'trainingLog:getByMemberMembership'
     },
     APP: {
       GET_VERSION: 'app:getVersion',

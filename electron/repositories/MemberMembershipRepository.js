@@ -3,7 +3,8 @@
  */
 import BaseRepository from './BaseRepository.js';
 import MemberMembership from '../models/MemberMembership.js';
-import { Op } from 'sequelize'; // Add this import at the top
+import TrainingLog from '../models/TrainingLog.js';
+import { Op } from 'sequelize';
 
 console.log('Initializing MemberMembershipRepository...');
 
@@ -94,6 +95,78 @@ class MemberMembershipRepository extends BaseRepository {
     );
   }
 
+  // Subtract one training from a member membership
+  async subtractTraining(memberMembershipId) {
+    const membership = await this.findById(memberMembershipId);
+
+    if (!membership) {
+      return { success: false, error: 'Member membership not found' };
+    }
+
+    if (membership.remainingTrainings === null) {
+      return { success: true, message: 'Trainings not tracked for this membership' };
+    }
+
+    if (membership.remainingTrainings <= 0) {
+      return { success: false, error: 'No trainings remaining' };
+    }
+
+    const newRemaining = membership.remainingTrainings - 1;
+    await this.update(
+      { remainingTrainings: newRemaining },
+      { where: { id: memberMembershipId } }
+    );
+
+    // Create a training log entry for subtraction
+    await TrainingLog.create({
+      memberMembershipId: memberMembershipId,
+      usedAt: new Date(),
+      action: 'subtract'
+    });
+
+    return {
+      success: true,
+      remainingTrainings: newRemaining,
+      totalTrainings: membership.totalTrainings
+    };
+  }
+
+  // Add one training back to a member membership
+  async addTraining(memberMembershipId) {
+    const membership = await this.findById(memberMembershipId);
+
+    if (!membership) {
+      return { success: false, error: 'Member membership not found' };
+    }
+
+    if (membership.remainingTrainings === null || membership.totalTrainings === null) {
+      return { success: false, error: 'Trainings not tracked for this membership' };
+    }
+
+    if (membership.remainingTrainings >= membership.totalTrainings) {
+      return { success: false, error: 'Cannot exceed total trainings' };
+    }
+
+    const newRemaining = membership.remainingTrainings + 1;
+    await this.update(
+      { remainingTrainings: newRemaining },
+      { where: { id: memberMembershipId } }
+    );
+
+    // Create a training log entry for addition
+    await TrainingLog.create({
+      memberMembershipId: memberMembershipId,
+      usedAt: new Date(),
+      action: 'add'
+    });
+
+    return {
+      success: true,
+      remainingTrainings: newRemaining,
+      totalTrainings: membership.totalTrainings
+    };
+  }
+
   // Get expirations by month
   async getExpirationsByMonth(year, month) {
     const startDate = new Date(year, month - 1, 1);
@@ -116,6 +189,18 @@ class MemberMembershipRepository extends BaseRepository {
     });
     
     return result.map(item => item.toJSON());
+  }
+
+  // Get training logs for a member membership
+  async getTrainingLogs(memberMembershipId) {
+    const logs = await TrainingLog.findAll({
+      where: {
+        memberMembershipId: memberMembershipId
+      },
+      order: [['usedAt', 'DESC']]
+    });
+
+    return logs.map(log => log.toJSON());
   }
 }
 

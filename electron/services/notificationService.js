@@ -16,12 +16,27 @@ export class NotificationService {
       today.setHours(0, 0, 0, 0); // Set to start of day for accurate comparison
       
       // Find all expired member memberships that are not soft deleted
+      // A membership is expired if:
+      // - Time-based: endDate < today
+      // - Training-based: endDate < today OR remainingTrainings === 0
       const expiredMemberships = await MemberMembership.findAll({
         where: {
-          endDate: {
-            [Op.lt]: today // endDate is before today
-          },
-          deletedAt: null // Not soft deleted
+          deletedAt: null, // Not soft deleted
+          [Op.or]: [
+            // Time-based expiration (endDate passed)
+            {
+              endDate: {
+                [Op.lt]: today
+              }
+            },
+            // Training-based expiration (trainings depleted)
+            {
+              remainingTrainings: 0,
+              totalTrainings: {
+                [Op.not]: null
+              }
+            }
+          ]
         },
         include: [
           {
@@ -47,7 +62,12 @@ export class NotificationService {
           // Create notification message with member's name
           const firstName = membership.member.firstName;
           const lastName = membership.member.lastName;
-          const message = `Изтекло членство за ${firstName} ${lastName}`;
+
+          // Determine expiration reason
+          const isTrainingDepleted = membership.remainingTrainings === 0 && membership.totalTrainings !== null;
+          const message = isTrainingDepleted
+            ? `Изчерпани тренировки за ${firstName} ${lastName}`
+            : `Изтекло членство за ${firstName} ${lastName}`;
           
           // Create notification for expired membership
           await Notification.create({

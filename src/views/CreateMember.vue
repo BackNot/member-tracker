@@ -31,12 +31,14 @@
   </div>
     
   
-<MemberMembershipTable 
-  :memberMemberships="memberMemberships" 
+<MemberMembershipTable
+  :memberMemberships="memberMemberships"
   :memberId="editMemberData?.id"
-  v-if="isEditMode && editMemberData?.id" 
+  v-if="isEditMode && editMemberData?.id"
   @deleteMemberMembership="softDeleteMemberMembership"
   @createMemberMembership="createMemberMembership"
+  @subtractTraining="handleSubtractTraining"
+  @addTraining="handleAddTraining"
 />
 
 </template>
@@ -143,10 +145,36 @@ const softDeleteMemberMembership = async (id: number) => {
   }
 };
 
-const createMemberMembership = async (membershipData: MemberMembershipFormData) => {  
+const createMemberMembership = async (membershipData: MemberMembershipFormData) => {
   console.log(membershipData);
   const result = await ipc?.invoke(IPC_CHANNELS.MEMBER_MEMBERSHIP.CREATE, membershipData);
   await reloadMemberMemberhips(route.params.id);
+};
+
+const handleSubtractTraining = async (memberMembershipId: number) => {
+  try {
+    const result = await window.electron.memberMembership.subtractTraining(memberMembershipId);
+    if (result.success) {
+      await reloadMemberMemberhips(route.params.id);
+    } else {
+      console.error('Error subtracting training:', result.error);
+    }
+  } catch (e) {
+    console.error('Error subtracting training:', e);
+  }
+};
+
+const handleAddTraining = async (memberMembershipId: number) => {
+  try {
+    const result = await window.electron.memberMembership.addTraining(memberMembershipId);
+    if (result.success) {
+      await reloadMemberMemberhips(route.params.id);
+    } else {
+      console.error('Error adding training:', result.error);
+    }
+  } catch (e) {
+    console.error('Error adding training:', e);
+  }
 };
 
 </script>

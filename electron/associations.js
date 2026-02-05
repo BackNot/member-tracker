@@ -2,6 +2,7 @@ import Member from './models/Member.js';
 import Membership from './models/Membership.js';
 import MemberMembership from './models/MemberMembership.js';
 import Notification from './models/Notification.js';
+import TrainingLog from './models/TrainingLog.js';
 
 export function setupAssociations() {  
   MemberMembership.belongsTo(Member, { 
@@ -32,5 +33,15 @@ export function setupAssociations() {
   MemberMembership.hasOne(Notification, {
     foreignKey: 'memberMembershipId',
     as: 'notification'
+  });
+
+  TrainingLog.belongsTo(MemberMembership, {
+    foreignKey: 'memberMembershipId',
+    as: 'memberMembership'
+  });
+
+  MemberMembership.hasMany(TrainingLog, {
+    foreignKey: 'memberMembershipId',
+    as: 'trainingLogs'
   });
 }

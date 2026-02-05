@@ -38,6 +38,18 @@ class MemberMembership extends Model {
           allowNull: true,
           field: 'end_date'
         },
+        totalTrainings: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+          defaultValue: null,
+          field: 'total_trainings'
+        },
+        remainingTrainings: {
+          type: DataTypes.INTEGER,
+          allowNull: true,
+          defaultValue: null,
+          field: 'remaining_trainings'
+        },
         deletedAt: {
           type: DataTypes.DATE,
           allowNull: true
