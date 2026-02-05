@@ -10,6 +10,9 @@
     "build-only": "vite build",
     "preview": "vite preview",
     "type-check": "vue-tsc --build",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "electron:dev": "concurrently \"npm run dev\" \"npm run electron:start\"",
     "electron:start": "wait-on http://localhost:5173 && electron --experimental-loader=node:module --experimental-modules .",
     "electron:build": "npm run build && electron-builder",
@@ -36,6 +39,8 @@
     "@tsconfig/node22": "^22.0.1",
     "@types/node": "^22.13.14",
     "@vitejs/plugin-vue": "^5.2.3",
+    "@vitest/coverage-v8": "^4.0.18",
+    "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.7.0",
     "autoprefixer": "^10.4.21",
     "concurrently": "^9.1.2",
@@ -43,52 +48,59 @@
     "electron": "^35.1.4",
     "electron-builder": "^26.0.12",
     "electron-rebuild": "^3.2.9",
+    "jsdom": "^28.0.0",
     "npm-run-all2": "^7.0.2",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.4",
     "typescript": "~5.8.0",
     "vite": "^6.2.4",
     "vite-plugin-vue-devtools": "^7.7.2",
+    "vitest": "^4.0.18",
     "vue-tsc": "^2.2.8",
     "wait-on": "^8.0.3"
   },
   "build": {
-  "appId": "com.member-tracker.app",
-  "productName": "Member Tracker",
-  "directories": {
-    "output": "dist_electron"
-  },
-  "files": [
-    "dist/**/*",
-    "electron/**/*",
-    "package.json",
-    ".env"
-  ],
-  "mac": {
-    "target": [
-      {
-        "target": "dmg",
-        "arch": ["x64", "arm64"]
-      }
+    "appId": "com.member-tracker.app",
+    "productName": "Member Tracker",
+    "directories": {
+      "output": "dist_electron"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json",
+      ".env"
     ],
-    "category": "public.app-category.productivity"
-  },
-  "win": {
-    "target": [
-      {
-        "target": "nsis",
-        "arch": ["x64"]
-      }
-    ],
-    "icon": "build/icon.ico"
-  },
-  "nsis": {
-    "oneClick": false,
-    "perMachine": true,
-    "allowElevation": true,
-    "createDesktopShortcut": true,
-    "createStartMenuShortcut": true,
-    "shortcutName": "Member Tracker"
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "category": "public.app-category.productivity"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowElevation": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Member Tracker"
+    }
   }
-}
 }
