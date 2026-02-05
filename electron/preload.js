@@ -29,7 +29,8 @@ contextBridge.exposeInMainWorld('electron', {
     markAsRead: (id) => ipcRenderer.invoke('notification:markAsRead', id),
     markAllAsRead: (memberMembershipId) => ipcRenderer.invoke('notification:markAllAsRead', memberMembershipId),
     softDelete: (id) => ipcRenderer.invoke('notification:softDelete', id),
-    restore: (id) => ipcRenderer.invoke('notification:restore', id)
+    restore: (id) => ipcRenderer.invoke('notification:restore', id),
+    checkExpired: () => ipcRenderer.invoke('notification:checkExpired')
   },
 
   // MemberMembership-specific APIs

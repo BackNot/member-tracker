@@ -136,8 +136,11 @@ const onNotificationClick = async (notification: any) => {
 const loadNotifications = async () => {
   isLoading.value = true
   error.value = ''
-  
+
   try {
+    // First check for newly expired memberships and create notifications
+    await window.electron.notification.checkExpired()
+
     const result = await window.electron.notification.getAll()
     notifications.value = result || []
   } catch (err: any) {

@@ -41,7 +41,8 @@ export const IPC_CHANNELS = {
       MARK_AS_READ: 'notification:markAsRead',
       MARK_ALL_AS_READ: 'notification:markAllAsRead',
       SOFT_DELETE: 'notification:softDelete',
-      RESTORE: 'notification:restore'
+      RESTORE: 'notification:restore',
+      CHECK_EXPIRED: 'notification:checkExpired'
     },
     APP: {
       GET_VERSION: 'app:getVersion',

@@ -5,8 +5,19 @@ import { IPC_CHANNELS } from './ipcConstant.js';
 import Notification from '../models/Notification.js';
 import MemberMembership from '../models/MemberMembership.js';
 import Member from '../models/Member.js';
+import { NotificationService } from '../services/notificationService.js';
 
 export function registerNotificationHandlers() {
+  // Check for expired memberships and create notifications
+  ipcMain.handle(IPC_CHANNELS.NOTIFICATION.CHECK_EXPIRED, async () => {
+    try {
+      return await NotificationService.checkExpiredMembershipsAndCreateNotifications();
+    } catch (error) {
+      console.error('Error checking expired memberships:', error);
+      return { error: error.message };
+    }
+  });
+
   // Create handler
   ipcMain.handle(IPC_CHANNELS.NOTIFICATION.CREATE, (_e, data) => notificationRepo.create(data));
   

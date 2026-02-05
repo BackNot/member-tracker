@@ -38,24 +38,26 @@ function createWindow() {
 
 
 app.whenReady().then(async () => {
-  createWindow();
-  
-  // Wait for database to be ready before registering handlers and checking memberships
+  // Wait for database to be ready before registering handlers
   await databaseReady;
-  
+
+  // Register all IPC handlers before creating window
   registerMemberHandlers();
   registerMembershipHandlers();
   registerMemberMembershipHandlers();
   registerNotificationHandlers();
   registerBackupHandlers();
-  
+
   // Check for expired memberships and create notifications on startup
   try {
     await NotificationService.checkExpiredMembershipsAndCreateNotifications();
   } catch (error) {
     console.error('Error checking expired memberships on startup:', error);
   }
-  
+
+  // Create window AFTER database and handlers are ready
+  createWindow();
+
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
