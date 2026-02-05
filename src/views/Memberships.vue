@@ -45,6 +45,8 @@ interface Membership {
   name: string;
   description: string;
   days: number;
+  type: 'time' | 'training';
+  trainings: number | null;
 }
 
 const memberships = ref<Membership[]>([]);

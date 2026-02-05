@@ -47,7 +47,7 @@
             <template v-if="memberMembership.totalTrainings !== null">
               <div class="flex items-center gap-2">
                 <button
-                  v-if="memberMembership.remainingTrainings < memberMembership.totalTrainings"
+                  v-if="(memberMembership.remainingTrainings ?? 0) < memberMembership.totalTrainings"
                   @click="addTraining(memberMembership)"
                   class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs hover:bg-green-200 flex items-center"
                   :title="t('membermemberships.add_training')"
@@ -58,7 +58,7 @@
                   {{ memberMembership.remainingTrainings }} / {{ memberMembership.totalTrainings }}
                 </span>
                 <button
-                  v-if="memberMembership.remainingTrainings > 0 && !isExpired(memberMembership)"
+                  v-if="(memberMembership.remainingTrainings ?? 0) > 0 && !isExpired(memberMembership)"
                   @click="subtractTraining(memberMembership)"
                   class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs hover:bg-blue-200 flex items-center"
                   :title="t('membermemberships.use_training')"
